@@ -1,14 +1,17 @@
 const path = require('path');
 const webpack = require('webpack');
 
-module.exports = env => {
-  const isProduction = !!env.production;
+module.exports = () => {
+  const isProduction = process.env.NODE_ENV === 'production';
   return {
     mode: isProduction ? 'production' : 'development',
-    entry: './src/carousel.js',
+    entry: {
+      carousel: './src/carousel.js',
+      example: './examples/simpleExample/example',
+    },
     output: {
       path: path.join(__dirname, 'dist'),
-      filename: 'carousel.min.js',
+      filename: '[name].min.js',
       library: 'Accessible Carousel',
       libraryTarget: 'umd',
       umdNamedDefine: true,
