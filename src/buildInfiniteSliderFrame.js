@@ -64,7 +64,7 @@ function createFrame(carousel) {
     'width',
     `${(100 * carousel.nrOfTotalSlideElements) / carousel.visibleSlides}%`
   );
-  [...carousel.selector.children].forEach(slide => {
+  carousel.slides.forEach(slide => {
     slide.style.setProperty('display', 'inline-block');
     slide.style.setProperty(
       'width',

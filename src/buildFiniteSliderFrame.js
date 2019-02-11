@@ -38,7 +38,7 @@ const buildFiniteSliderFrame = options => carousel => {
     goTo: goTo(carousel),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
-    slides: carousel.selector.children,
+    slides: [...carousel.selector.children],
     nrOfSlides: carousel.selector.children.length,
   });
   carousel.frame = createFrame(carousel);
@@ -54,7 +54,7 @@ function createFrame(carousel) {
     'width',
     `${(100 * carousel.nrOfSlides) / carousel.visibleSlides}%`
   );
-  [...carousel.selector.children].forEach(slide => {
+  carousel.slides.forEach(slide => {
     slide.style.setProperty('display', 'inline-block');
     slide.style.setProperty('width', `${100 / carousel.nrOfSlides}%`);
     frame.appendChild(slide);
