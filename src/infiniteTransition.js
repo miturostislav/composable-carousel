@@ -16,7 +16,7 @@ const goTo = (parentGoTo, carousel) => (index, { toRight, toLeft }) => {
       slideIndexToTransit = index + carousel.nrOfClonesPerSide;
     }
     carousel.translateToSlide(slideIndexToTransit);
-    carousel.selector.children[0].addEventListener(
+    carousel.frame.addEventListener(
       'transitionend',
       function onTransitionEnd() {
         carousel.selector.removeEventListener('transitioned', onTransitionEnd);
@@ -52,15 +52,9 @@ export default infiniteTransition;
 
 function setCarouselTransition(carousel) {
   const { ms, easing } = carousel.transitionOptions;
-  carousel.selector.children[0].style.setProperty(
-    'transition',
-    `transform ${ms}ms ${easing}`
-  );
+  carousel.frame.style.setProperty('transition', `transform ${ms}ms ${easing}`);
 }
 
 function removeCarouselTransition(carousel) {
-  carousel.selector.children[0].style.setProperty(
-    'transition',
-    `transform 0ms`
-  );
+  carousel.frame.style.setProperty('transition', `transform 0ms`);
 }

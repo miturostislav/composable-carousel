@@ -1,5 +1,5 @@
 const translateToSlide = carousel => slideIndex => {
-  carousel.selector.children[0].style.setProperty(
+  carousel.frame.style.setProperty(
     'transform',
     `translateX(-${(100 / carousel.nrOfTotalSlideElements) * slideIndex}%)`
   );
@@ -76,13 +76,12 @@ function createFrame(carousel) {
 }
 
 function cloneSlides(carousel) {
-  const frame = carousel.selector.children[0];
   for (let i = 0; i < carousel.nrOfClonesPerSide; i++) {
     const slideToPrepend = carousel.slides[
       carousel.nrOfSlides - 1 - i
     ].cloneNode(true);
     const slideToAppend = carousel.slides[i].cloneNode(true);
-    frame.insertBefore(slideToPrepend, frame.children[0]);
-    frame.appendChild(slideToAppend);
+    carousel.frame.insertBefore(slideToPrepend, carousel.frame.children[0]);
+    carousel.frame.appendChild(slideToAppend);
   }
 }

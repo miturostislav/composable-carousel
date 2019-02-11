@@ -1,29 +1,22 @@
-export const getTranslateValue = frame => {
-  return frame.style.transform
-    ? Number(frame.style.transform.match(/[-+]?(?:\d*\.?\d+|\d+\.?\d*)/g)[0])
-    : 0;
-};
-
 export default function draggable(carousel) {
-  const frame = carousel.selector.children[0];
-  frame.addEventListener('mousedown', mouseDownEvent => {
-    const initialTranslateValue = getTranslateValue(frame);
+  carousel.frame.addEventListener('mousedown', mouseDownEvent => {
+    const initialTranslateValue = getTranslateValue(carousel);
 
     function onMouseMove(mouseMoveEvent) {
       mouseMoveEvent.preventDefault();
-      frame.style.setProperty(
+      carousel.frame.style.setProperty(
         'transform',
         `translateX(${initialTranslateValue -
           ((mouseDownEvent.pageX - mouseMoveEvent.pageX) * 100) /
-            carousel.selector.children[0].offsetWidth}%)`
+            carousel.frame.offsetWidth}%)`
       );
     }
 
     function onMouseStop() {
-      const draggedValue = getTranslateValue(frame) - initialTranslateValue;
-      frame.removeEventListener('mousemove', onMouseMove);
-      frame.removeEventListener('mouseup', onMouseStop);
-      frame.removeEventListener('mouseleave', onMouseStop);
+      const draggedValue = getTranslateValue(carousel) - initialTranslateValue;
+      carousel.frame.removeEventListener('mousemove', onMouseMove);
+      carousel.frame.removeEventListener('mouseup', onMouseStop);
+      carousel.frame.removeEventListener('mouseleave', onMouseStop);
       if (draggedValue) {
         if (draggedValue < 0) {
           carousel.goToNext();
@@ -35,8 +28,14 @@ export default function draggable(carousel) {
       }
     }
 
-    frame.addEventListener('mousemove', onMouseMove);
-    frame.addEventListener('mouseup', onMouseStop);
-    frame.addEventListener('mouseleave', onMouseStop);
+    carousel.frame.addEventListener('mousemove', onMouseMove);
+    carousel.frame.addEventListener('mouseup', onMouseStop);
+    carousel.frame.addEventListener('mouseleave', onMouseStop);
   });
+}
+
+function getTranslateValue({ frame }) {
+  return frame.style.transform
+    ? Number(frame.style.transform.match(/[-+]?(?:\d*\.?\d+|\d+\.?\d*)/g)[0])
+    : 0;
 }

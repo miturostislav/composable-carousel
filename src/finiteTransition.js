@@ -5,7 +5,7 @@ const defaultOptions = {
 
 const goTo = (parentGoTo, carousel) => index => {
   return new Promise(resolve => {
-    carousel.selector.children[0].addEventListener(
+    carousel.frame.addEventListener(
       'transitionend',
       function onTransitionEnd() {
         carousel.selector.removeEventListener('transitioned', onTransitionEnd);
@@ -18,7 +18,7 @@ const goTo = (parentGoTo, carousel) => index => {
 
 const finiteTransition = ({ ms, easing }) => carousel => {
   Object.assign(carousel, { goTo: goTo(carousel.goTo, carousel) });
-  carousel.selector.children[0].style.setProperty(
+  carousel.frame.style.setProperty(
     'transition',
     `transform ${ms || defaultOptions.ms}ms ${easing || defaultOptions.easing}`
   );
