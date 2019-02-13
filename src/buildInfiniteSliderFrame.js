@@ -44,9 +44,7 @@ const buildInfiniteSliderFrame = options => carousel => {
     nrOfSlides: carousel.selector.children.length,
   });
   carousel.nrOfClonesPerSide =
-    carousel.slidesToScroll % 2
-      ? carousel.slidesToScroll
-      : carousel.slidesToScroll + 1;
+    carousel.visibleSlides + carousel.slidesToScroll - 1;
   carousel.nrOfTotalSlideElements =
     carousel.nrOfSlides + carousel.nrOfClonesPerSide * 2;
   carousel.frame = createFrame(carousel);
@@ -77,10 +75,12 @@ function createFrame(carousel) {
 
 function cloneSlides(carousel) {
   for (let i = 0; i < carousel.nrOfClonesPerSide; i++) {
+    const indexToClone =
+      i - carousel.nrOfSlides < 0 ? i : i - carousel.nrOfSlides;
     const slideToPrepend = carousel.slides[
-      carousel.nrOfSlides - 1 - i
+      carousel.nrOfSlides - 1 - indexToClone
     ].cloneNode(true);
-    const slideToAppend = carousel.slides[i].cloneNode(true);
+    const slideToAppend = carousel.slides[indexToClone].cloneNode(true);
     carousel.frame.insertBefore(slideToPrepend, carousel.frame.children[0]);
     carousel.frame.appendChild(slideToAppend);
   }

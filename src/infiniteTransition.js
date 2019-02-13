@@ -3,7 +3,7 @@ const defaultOptions = {
   easing: 'ease-out',
 };
 
-const goTo = (parentGoTo, carousel) => (index, { toRight, toLeft }) => {
+const goTo = (parentGoTo, carousel) => (index, { toRight, toLeft } = {}) => {
   return new Promise(resolve => {
     let slideIndexToTransit;
     if (toRight && index < carousel.activeSlideIndex) {

@@ -5,12 +5,17 @@ import draggable from '../../src/draggable';
 import finiteTransition from '../../src/finiteTransition';
 import infiniteTransition from '../../src/infiniteTransition';
 import autoSlide from '../../src/autoSlide';
+import dots from '../../src/dots';
 
 const selector = document.querySelector('#selector');
 const carousel = composeCarousel({ selector })(
-  buildInfiniteSliderFrame(),
+  buildInfiniteSliderFrame({
+    visibleSlides: 2,
+    slidesToScroll: 2,
+  }),
   infiniteTransition({ ms: 200, easing: 'ease-out' }),
-  draggable
+  draggable,
+  dots
   // autoSlide(1500)
 );
 
