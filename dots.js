@@ -10,7 +10,6 @@ export default function dots(carousel) {
     onDotChange: () => setActiveDot(dotsList.children, nrOfActiveDot(carousel)),
   });
   setActiveDot(dotsList.children, 0);
-  carousel.selector.appendChild(dotsList);
   return dotsList;
 }
 
