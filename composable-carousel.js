@@ -8,6 +8,9 @@ const composeCarousel = selector => (...composers) => {
     getActiveSlideIndex() {
       return carousel.activeSlideIndex;
     },
+    compose(fn) {
+      return fn(carousel);
+    },
   };
 };
 
