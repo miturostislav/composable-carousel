@@ -12,8 +12,7 @@ const goTo = carousel => index => {
 
 const goToNext = carousel => () => carousel.goTo(carousel.nextIndexToScroll());
 
-const goToPrev = carousel => () =>
-  carousel.goTo(carousel.prevIndexToScroll(), { toLeft: true });
+const goToPrev = carousel => () => carousel.goTo(carousel.prevIndexToScroll());
 
 const nextIndexToScroll = carousel => () => {
   const nextIndex = carousel.activeSlideIndex + carousel.slidesToScroll;
@@ -27,8 +26,8 @@ const prevIndexToScroll = carousel => () => {
 };
 
 const defaultOptions = {
-  visibleSlides: 2,
-  slidesToScroll: 2,
+  visibleSlides: 1,
+  slidesToScroll: 1,
   activeSlideIndex: 0,
 };
 
