@@ -1,10 +1,8 @@
 {
-  "name": "accessible-carousel",
+  "name": "composable-carousel",
   "version": "1.0.0",
-  "description": "lightweight accessible carousel",
+  "description": "lightweight composable carousel",
   "scripts": {
-    "build": "NODE_ENV=production webpack",
-    "dev": "NODE_ENV=development webpack --progress --colors --watch",
     "eslint": "eslint --fix src/**/*.js",
     "prettier": "prettier --write src/**/*.js examples/**/*.js",
     "pretty-quick": "pretty-quick --staged --pattern '**/*.*js'",
@@ -12,29 +10,20 @@
   },
   "author": "Mitu Rostislav",
   "license": "MIT",
+  "main": "dist/composable-carousel.js",
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.3.1",
     "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.5",
     "eslint": "^5.12.1",
     "eslint-config-prettier": "^4.0.0",
     "husky": "^1.3.1",
     "invariant": "^2.2.4",
     "path": "^0.12.7",
     "prettier": "^1.16.1",
-    "pretty-quick": "^1.10.0",
-    "webpack": "^4.29.0",
-    "webpack-cli": "^3.2.1"
+    "pretty-quick": "^1.10.0"
   },
   "husky": {
     "hooks": {
       "pre-commit": "npm run eslint && npm run pretty-quick"
     }
-  },
-  "dependencies": {
-    "lodash.curry": "^4.1.1",
-    "lodash.flow": "^3.5.0",
-    "lodash.isarraylike": "^4.2.0"
   }
 }
