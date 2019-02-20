@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "lightweight composable carousel",
   "scripts": {
-    "eslint": "eslint --fix src/**/*.js",
-    "prettier": "prettier --write src/**/*.js examples/**/*.js",
-    "pretty-quick": "pretty-quick --staged --pattern '**/*.*js'",
+    "eslint": "eslint --fix *.js",
+    "prettier": "prettier --write *.js",
+    "pretty-quick": "pretty-quick --staged --pattern '*.*js'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mitu Rostislav",
   "license": "MIT",
-  "main": "dist/composable-carousel.js",
+  "main": "composable-carousel.js",
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.12.1",

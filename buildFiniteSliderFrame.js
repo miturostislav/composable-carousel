@@ -27,8 +27,8 @@ const prevIndexToScroll = carousel => () => {
   }
 };
 const defaultOptions = {
-  visibleSlides: 2,
-  slidesToScroll: 2,
+  visibleSlides: 1,
+  slidesToScroll: 1,
   activeSlideIndex: 0,
 };
 const buildFiniteSliderFrame = options => carousel => {

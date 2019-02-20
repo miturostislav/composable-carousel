@@ -16,11 +16,12 @@ const goTo = (parentGoTo, carousel) => index => {
   });
 };
 
-const finiteTransition = ({ ms, easing }) => carousel => {
+const finiteTransition = options => carousel => {
+  const finalOptions = Object.assign({}, defaultOptions, options);
   Object.assign(carousel, { goTo: goTo(carousel.goTo, carousel) });
   carousel.frame.style.setProperty(
     'transition',
-    `transform ${ms || defaultOptions.ms}ms ${easing || defaultOptions.easing}`
+    `transform ${finalOptions.ms}ms ${finalOptions.easing}`
   );
 };
 
