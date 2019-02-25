@@ -3,7 +3,7 @@ const goTo = carousel => index => {
     'transform',
     `translateX(-${(100 / carousel.nrOfSlides) * index}%)`
   );
-  carousel.activeSlideIndex = String(index);
+  carousel.activeSlideIndex = index;
 };
 const goToNext = carousel => () => carousel.goTo(carousel.nextIndexToScroll());
 const goToPrev = carousel => () => carousel.goTo(carousel.prevIndexToScroll());
@@ -31,22 +31,25 @@ const defaultOptions = {
   slidesToScroll: 1,
   activeSlideIndex: 0,
 };
-const buildFiniteSliderFrame = options => carousel => {
+const finiteSliderFrame = options => carousel => {
+  const slides = carousel.slides || Array.from(carousel.selector.children);
   Object.assign(carousel, defaultOptions, options, {
     nextIndexToScroll: nextIndexToScroll(carousel),
     prevIndexToScroll: prevIndexToScroll(carousel),
     goTo: goTo(carousel),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
-    slides: [...carousel.selector.children],
-    nrOfSlides: carousel.selector.children.length,
+    slides,
+    nrOfSlides: slides.length,
+    buildFrame: finiteSliderFrame,
   });
   carousel.frame = createFrame(carousel);
   carousel.selector.style.setProperty('overflow', 'hidden');
   carousel.selector.appendChild(carousel.frame);
+  carousel.goTo(carousel.activeSlideIndex);
 };
 
-export default buildFiniteSliderFrame;
+export default finiteSliderFrame;
 
 function createFrame(carousel) {
   const frame = document.createElement('div');
