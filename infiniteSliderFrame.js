@@ -59,6 +59,7 @@ export default infiniteSliderFrame;
 
 function createFrame(carousel) {
   const frame = document.createElement('div');
+  frame.classList.add('frame');
   frame.style.setProperty(
     'width',
     `${(100 * carousel.nrOfTotalSlideElements) / carousel.visibleSlides}%`

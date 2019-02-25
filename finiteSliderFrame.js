@@ -53,6 +53,7 @@ export default finiteSliderFrame;
 
 function createFrame(carousel) {
   const frame = document.createElement('div');
+  frame.classList.add('frame');
   frame.style.setProperty(
     'width',
     `${(100 * carousel.nrOfSlides) / carousel.visibleSlides}%`
