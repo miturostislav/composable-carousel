@@ -1,6 +1,15 @@
-const composeCarousel = selector => (...composers) => {
+const composeCarousel = (selector, { onInit }) => (...composers) => {
   const carousel = { selector };
   composers.forEach(composer => composer(carousel));
+
+  if (typeof onInit === 'function') {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        onInit();
+      });
+    });
+  }
+
   return {
     goToNext: carousel.goToNext,
     goToPrev: carousel.goToPrev,
