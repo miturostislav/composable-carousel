@@ -1,4 +1,4 @@
-const composeCarousel = (selector, { onInit }) => (...composers) => {
+const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
   const carousel = { selector };
   composers.forEach(composer => composer(carousel));
 
