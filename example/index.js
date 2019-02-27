@@ -2,6 +2,7 @@ import composeCarousel from '../composable-carousel';
 import infiniteSliderFrame from '../infiniteSliderFrame';
 import responsiveSliderFrame from '../responsiveSliderFrame';
 import draggable from '../draggable';
+import responsiveDraggable from '../responsiveDraggable';
 
 const carousel = composeCarousel(document.querySelector('#selector'))(
   infiniteSliderFrame(),
@@ -21,7 +22,17 @@ const carousel = composeCarousel(document.querySelector('#selector'))(
       }
     }
   ]),
-  draggable
+  draggable(),
+  responsiveDraggable([
+    {
+      breakpoint: 1200,
+      isDraggable: true
+    },
+    {
+      breakpoint: 2000,
+      isDraggable: false
+    },
+  ])
 );
 
 document.querySelector('#next').addEventListener('click', carousel.goToNext);

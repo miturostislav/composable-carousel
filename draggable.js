@@ -1,23 +1,29 @@
-export default function draggable(carousel) {
-  carousel.frame.addEventListener('mousedown', mouseDownEvent => {
+const draggable = () => carousel => {
+  function onStartDragging(onStartEvent) {
     const initialTranslateValue = getTranslateValue(carousel);
     let draggedValue = 0;
 
-    function onMouseMove(mouseMoveEvent) {
-      mouseMoveEvent.preventDefault();
+    function onMove(onMoveEvent) {
+      const startPageX =
+        onStartEvent.pageX || onStartEvent.changedTouches[0].pageX;
+      const movePageX =
+        onMoveEvent.pageX || onMoveEvent.changedTouches[0].pageX;
+      onMoveEvent.preventDefault();
       carousel.frame.style.setProperty(
         'transform',
         `translateX(${initialTranslateValue -
-          ((mouseDownEvent.pageX - mouseMoveEvent.pageX) * 100) /
-            carousel.frame.offsetWidth}%)`
+          ((startPageX - movePageX) * 100) / carousel.frame.offsetWidth}%)`
       );
     }
 
-    function onMouseStop() {
+    function onEnd() {
       draggedValue = getTranslateValue(carousel) - initialTranslateValue;
-      carousel.frame.removeEventListener('mousemove', onMouseMove);
-      carousel.frame.removeEventListener('mouseup', onMouseStop);
-      carousel.frame.removeEventListener('mouseleave', onMouseStop);
+      carousel.frame.removeEventListener('mousemove', onMove);
+      carousel.frame.removeEventListener('mouseup', onEnd);
+      carousel.frame.removeEventListener('mouseleave', onEnd);
+      carousel.frame.removeEventListener('touchmove', onMove);
+      carousel.frame.removeEventListener('touchend', onEnd);
+      carousel.frame.removeEventListener('touchcancel', onEnd);
       if (draggedValue) {
         if (draggedValue < 0) {
           carousel.goToNext();
@@ -29,9 +35,12 @@ export default function draggable(carousel) {
       }
     }
 
-    carousel.frame.addEventListener('mousemove', onMouseMove);
-    carousel.frame.addEventListener('mouseup', onMouseStop);
-    carousel.frame.addEventListener('mouseleave', onMouseStop);
+    carousel.frame.addEventListener('mousemove', onMove);
+    carousel.frame.addEventListener('mouseup', onEnd);
+    carousel.frame.addEventListener('mouseleave', onEnd);
+    carousel.frame.addEventListener('touchmove', onMove);
+    carousel.frame.addEventListener('touchend', onEnd);
+    carousel.frame.addEventListener('touchcancel', onEnd);
     carousel.frame.addEventListener(
       'click',
       function onClick(onClickEvent) {
@@ -42,8 +51,25 @@ export default function draggable(carousel) {
       },
       true
     );
-  });
-}
+  }
+
+  const draggableApi = {
+    start() {
+      carousel.frame.addEventListener('mousedown', onStartDragging);
+      carousel.frame.addEventListener('touchstart', onStartDragging);
+    },
+    stop() {
+      carousel.frame.removeEventListener('mousedown', onStartDragging);
+      carousel.frame.removeEventListener('touchstart', onStartDragging);
+    },
+  };
+
+  draggableApi.start();
+  carousel.draggableApi = draggableApi;
+  return draggableApi;
+};
+
+export default draggable;
 
 function getTranslateValue({ frame }) {
   return frame.style.transform
