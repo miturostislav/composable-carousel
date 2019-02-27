@@ -1,6 +1,7 @@
 import composeCarousel from '../composable-carousel';
 import infiniteSliderFrame from '../infiniteSliderFrame';
 import responsiveSliderFrame from '../responsiveSliderFrame';
+import draggable from '../draggable';
 
 const carousel = composeCarousel(document.querySelector('#selector'))(
   infiniteSliderFrame(),
@@ -19,7 +20,8 @@ const carousel = composeCarousel(document.querySelector('#selector'))(
         slidesToScroll: 2,
       }
     }
-  ])
+  ]),
+  draggable
 );
 
 document.querySelector('#next').addEventListener('click', carousel.goToNext);

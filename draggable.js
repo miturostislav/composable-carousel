@@ -1,6 +1,7 @@
 export default function draggable(carousel) {
   carousel.frame.addEventListener('mousedown', mouseDownEvent => {
     const initialTranslateValue = getTranslateValue(carousel);
+    let draggedValue = 0;
 
     function onMouseMove(mouseMoveEvent) {
       mouseMoveEvent.preventDefault();
@@ -13,7 +14,7 @@ export default function draggable(carousel) {
     }
 
     function onMouseStop() {
-      const draggedValue = getTranslateValue(carousel) - initialTranslateValue;
+      draggedValue = getTranslateValue(carousel) - initialTranslateValue;
       carousel.frame.removeEventListener('mousemove', onMouseMove);
       carousel.frame.removeEventListener('mouseup', onMouseStop);
       carousel.frame.removeEventListener('mouseleave', onMouseStop);
@@ -31,6 +32,16 @@ export default function draggable(carousel) {
     carousel.frame.addEventListener('mousemove', onMouseMove);
     carousel.frame.addEventListener('mouseup', onMouseStop);
     carousel.frame.addEventListener('mouseleave', onMouseStop);
+    carousel.frame.addEventListener(
+      'click',
+      function onClick(onClickEvent) {
+        carousel.frame.removeEventListener('click', onClick, true);
+        if (draggedValue) {
+          onClickEvent.preventDefault();
+        }
+      },
+      true
+    );
   });
 }
 
