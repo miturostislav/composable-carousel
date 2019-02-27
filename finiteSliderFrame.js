@@ -32,15 +32,12 @@ const defaultOptions = {
   activeSlideIndex: 0,
 };
 const finiteSliderFrame = options => carousel => {
-  const slides = carousel.slides || Array.from(carousel.selector.children);
   Object.assign(carousel, defaultOptions, options, {
     nextIndexToScroll: nextIndexToScroll(carousel),
     prevIndexToScroll: prevIndexToScroll(carousel),
     goTo: goTo(carousel),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
-    slides,
-    nrOfSlides: slides.length,
     buildFrame: finiteSliderFrame,
   });
   carousel.frame = createFrame(carousel);
@@ -58,8 +55,8 @@ function createFrame(carousel) {
     'width',
     `${(100 * carousel.nrOfSlides) / carousel.visibleSlides}%`
   );
+  frame.style.setProperty('display', 'flex');
   carousel.slides.forEach(slide => {
-    slide.style.setProperty('display', 'inline-block');
     slide.style.setProperty('width', `${100 / carousel.nrOfSlides}%`);
     frame.appendChild(slide);
   });

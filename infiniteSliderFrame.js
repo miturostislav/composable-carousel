@@ -32,7 +32,6 @@ const defaultOptions = {
 };
 
 const infiniteSliderFrame = options => carousel => {
-  const slides = carousel.slides || Array.from(carousel.selector.children);
   Object.assign(carousel, defaultOptions, options, {
     nextIndexToScroll: nextIndexToScroll(carousel),
     prevIndexToScroll: prevIndexToScroll(carousel),
@@ -40,8 +39,6 @@ const infiniteSliderFrame = options => carousel => {
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
     translateToSlide: translateToSlide(carousel),
-    slides,
-    nrOfSlides: slides.length,
     buildFrame: infiniteSliderFrame,
   });
   carousel.nrOfClonesPerSide =
@@ -64,8 +61,8 @@ function createFrame(carousel) {
     'width',
     `${(100 * carousel.nrOfTotalSlideElements) / carousel.visibleSlides}%`
   );
+  frame.style.setProperty('display', 'flex');
   carousel.slides.forEach(slide => {
-    slide.style.setProperty('display', 'inline-block');
     slide.style.setProperty(
       'width',
       `${100 / carousel.nrOfTotalSlideElements}%`

@@ -1,5 +1,9 @@
 const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
-  const carousel = { selector };
+  const carousel = {
+    selector,
+    slides: Array.from(selector.children),
+    nrOfSlides: selector.children.length,
+  };
   composers.forEach(composer => composer(carousel));
 
   if (typeof onInit === 'function') {
