@@ -3,17 +3,12 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
     selector,
     slides: Array.from(selector.children),
     nrOfSlides: selector.children.length,
+    onInit,
   };
   composers.forEach(composer => composer(carousel));
-
   if (typeof onInit === 'function') {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        onInit();
-      });
-    });
+    carousel.onInit();
   }
-
   return {
     goToNext: carousel.goToNext,
     goToPrev: carousel.goToPrev,

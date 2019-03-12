@@ -1,3 +1,5 @@
+import { createFrame, onSliderFrameInit } from './sliderFrameUtils';
+
 const goTo = carousel => index => {
   carousel.frame.style.setProperty(
     'transform',
@@ -39,26 +41,15 @@ const finiteSliderFrame = options => carousel => {
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
     buildFrame: finiteSliderFrame,
+    onInit: onSliderFrameInit(carousel.onInit),
   });
-  carousel.frame = createFrame(carousel);
+  carousel.frame = createFrame({
+    nrOfTotalSlideElements: carousel.nrOfSlides,
+    ...carousel,
+  });
   carousel.selector.style.setProperty('overflow', 'hidden');
   carousel.selector.appendChild(carousel.frame);
   carousel.goTo(carousel.activeSlideIndex);
 };
 
 export default finiteSliderFrame;
-
-function createFrame(carousel) {
-  const frame = document.createElement('div');
-  frame.classList.add('frame');
-  frame.style.setProperty(
-    'width',
-    `${(100 * carousel.nrOfSlides) / carousel.visibleSlides}%`
-  );
-  frame.style.setProperty('display', 'flex');
-  carousel.slides.forEach(slide => {
-    slide.style.setProperty('width', `${100 / carousel.nrOfSlides}%`);
-    frame.appendChild(slide);
-  });
-  return frame;
-}

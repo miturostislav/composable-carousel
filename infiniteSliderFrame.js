@@ -1,3 +1,5 @@
+import { createFrame, onSliderFrameInit } from './sliderFrameUtils';
+
 const translateToSlide = carousel => slideIndex => {
   carousel.frame.style.setProperty(
     'transform',
@@ -40,6 +42,7 @@ const infiniteSliderFrame = options => carousel => {
     goToPrev: goToPrev(carousel),
     translateToSlide: translateToSlide(carousel),
     buildFrame: infiniteSliderFrame,
+    onInit: onSliderFrameInit(carousel.onInit),
   });
   carousel.nrOfClonesPerSide =
     carousel.visibleSlides + carousel.slidesToScroll - 1;
@@ -53,24 +56,6 @@ const infiniteSliderFrame = options => carousel => {
 };
 
 export default infiniteSliderFrame;
-
-function createFrame(carousel) {
-  const frame = document.createElement('div');
-  frame.classList.add('frame');
-  frame.style.setProperty(
-    'width',
-    `${(100 * carousel.nrOfTotalSlideElements) / carousel.visibleSlides}%`
-  );
-  frame.style.setProperty('display', 'flex');
-  carousel.slides.forEach(slide => {
-    slide.style.setProperty(
-      'width',
-      `${100 / carousel.nrOfTotalSlideElements}%`
-    );
-    frame.appendChild(slide);
-  });
-  return frame;
-}
 
 function cloneSlides(carousel) {
   for (let i = 0; i < carousel.nrOfClonesPerSide; i++) {

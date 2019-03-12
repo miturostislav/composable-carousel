@@ -1,4 +1,4 @@
-import { getCurrentBreakpoint } from './utils';
+import { getCurrentBreakpoint } from './responsiveUtils';
 
 const responsiveSliderFrame = responsiveOptions => carousel => {
   let currentBreakpoint = getCurrentBreakpoint(responsiveOptions);

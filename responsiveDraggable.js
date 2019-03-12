@@ -1,4 +1,4 @@
-import { getCurrentBreakpoint } from './utils';
+import { getCurrentBreakpoint } from './responsiveUtils';
 
 const responsiveDraggable = responsiveOptions => carousel => {
   let currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
