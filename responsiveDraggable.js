@@ -1,7 +1,9 @@
+import draggable from './draggable';
 import { getCurrentBreakpoint } from './responsiveUtils';
 
 const responsiveDraggable = responsiveOptions => carousel => {
   let currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
+  draggable()(carousel);
   handleDraggingByBreakpoint(responsiveOptions, carousel);
 
   window.addEventListener('resize', () => {
