@@ -1,6 +1,6 @@
 **Work in progress**
 
-Lightweight and composable carousel with no dependencies
+#Lightweight and composable carousel with no dependencies
 
 composable-carousel is a very lightweight library formed from small composable functions with no dependencies and no styling. Each composable function can be imported independently. You can compose your carousel for your own needs without importing unused code. You are free to reuse some composable functions from this library with the possibility to create your own composable functions and to use them together. Your suggestions and pull requests are welcome.
 
