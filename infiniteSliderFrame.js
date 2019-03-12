@@ -44,8 +44,9 @@ const infiniteSliderFrame = options => carousel => {
     buildFrame: infiniteSliderFrame,
     onInit: onSliderFrameInit(carousel.onInit),
   });
-  carousel.nrOfClonesPerSide =
-    carousel.visibleSlides + carousel.slidesToScroll - 1;
+  carousel.nrOfClonesPerSide = Math.ceil(
+    carousel.visibleSlides + carousel.slidesToScroll - 1
+  );
   carousel.nrOfTotalSlideElements =
     carousel.nrOfSlides + carousel.nrOfClonesPerSide * 2;
   carousel.frame = createFrame(carousel);
