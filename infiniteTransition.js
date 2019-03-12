@@ -19,7 +19,7 @@ const goTo = (parentGoTo, carousel) => (index, { toRight, toLeft } = {}) => {
     carousel.frame.addEventListener(
       'transitionend',
       function onTransitionEnd() {
-        carousel.selector.removeEventListener('transitioned', onTransitionEnd);
+        carousel.frame.removeEventListener('transitioned', onTransitionEnd);
         removeCarouselTransition(carousel);
         parentGoTo(index);
         requestAnimationFrame(() => {
