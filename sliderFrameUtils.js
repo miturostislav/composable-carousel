@@ -5,6 +5,7 @@ export function createFrame({
   frame,
 }) {
   const newFrame = frame || document.createElement('div');
+  newFrame.innerHTML = '';
   newFrame.classList.add('frame');
   newFrame.style.setProperty(
     'width',
