@@ -10,9 +10,15 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
     carousel.onInit();
   }
   return {
-    goToNext: carousel.goToNext,
-    goToPrev: carousel.goToPrev,
-    goTo: carousel.goTo,
+    goToNext() {
+      carousel.goToNext();
+    },
+    goToPrev() {
+      carousel.goToPrev();
+    },
+    goTo(index) {
+      carousel.goTo(index);
+    },
     getActiveSlideIndex() {
       return carousel.activeSlideIndex;
     },

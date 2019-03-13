@@ -4,9 +4,7 @@ export function createFrame({
   slides,
   frame,
 }) {
-  const newFrame = frame
-    ? frame.cloneNode(false)
-    : document.createElement('div');
+  const newFrame = frame || document.createElement('div');
   newFrame.classList.add('frame');
   newFrame.style.setProperty(
     'width',

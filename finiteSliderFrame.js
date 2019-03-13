@@ -28,6 +28,16 @@ const prevIndexToScroll = carousel => () => {
     return nextIndex;
   }
 };
+const buildFrame = carousel => options => {
+  Object.assign(carousel, defaultOptions, options);
+  carousel.frame = createFrame({
+    nrOfTotalSlideElements: carousel.nrOfSlides,
+    ...carousel,
+  });
+  carousel.selector.style.setProperty('overflow', 'hidden');
+  carousel.selector.appendChild(carousel.frame);
+  carousel.goTo(carousel.activeSlideIndex);
+};
 const defaultOptions = {
   visibleSlides: 1,
   slidesToScroll: 1,
@@ -40,16 +50,10 @@ const finiteSliderFrame = options => carousel => {
     goTo: goTo(carousel),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
-    buildFrame: finiteSliderFrame,
+    buildFrame: buildFrame(carousel),
     onInit: onSliderFrameInit(carousel.onInit),
   });
-  carousel.frame = createFrame({
-    nrOfTotalSlideElements: carousel.nrOfSlides,
-    ...carousel,
-  });
-  carousel.selector.style.setProperty('overflow', 'hidden');
-  carousel.selector.appendChild(carousel.frame);
-  carousel.goTo(carousel.activeSlideIndex);
+  carousel.buildFrame(options);
 };
 
 export default finiteSliderFrame;

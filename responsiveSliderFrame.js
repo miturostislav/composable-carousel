@@ -20,5 +20,5 @@ function reCreateFrame(responsiveOptions, carousel) {
       responsiveOption.breakpoint === getCurrentBreakpoint(responsiveOptions)
   ).options;
   carousel.selector.removeChild(carousel.frame);
-  carousel.buildFrame(currentOptions)(carousel);
+  carousel.buildFrame(currentOptions);
 }
