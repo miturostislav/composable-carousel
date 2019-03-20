@@ -14,8 +14,8 @@ const infiniteSliderFrame = options => carousel => {
     translateToSlide: translateToSlide(carousel),
     buildFrame: buildFrame(carousel),
     onInit: onSliderFrameInit(carousel.onInit),
-    nrOfClonesPerSide: Math.ceil(carousel.visibleSlides - 1),
-    build: () => carousel.buildFrame(carousel),
+    nrOfClonesPerSide: () => Math.ceil(carousel.visibleSlides - 1),
+    build: () => carousel.buildFrame(),
   });
 };
 
@@ -29,7 +29,7 @@ const translateToSlide = carousel => slideIndex => {
 };
 
 const goTo = carousel => index => {
-  carousel.translateToSlide(index + carousel.nrOfClonesPerSide);
+  carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
   carousel.activeSlideIndex = index;
 };
 
@@ -48,10 +48,9 @@ const prevIndexToScroll = carousel => () => {
   return prevIndex < 0 ? carousel.nrOfSlides + prevIndex : prevIndex;
 };
 
-const buildFrame = carousel => options => {
-  Object.assign(carousel, defaultOptions, options);
+const buildFrame = carousel => () => {
   carousel.nrOfTotalSlideElements =
-    carousel.nrOfSlides + carousel.nrOfClonesPerSide * 2;
+    carousel.nrOfSlides + carousel.nrOfClonesPerSide() * 2;
   carousel.frame = createFrame(carousel);
   carousel.selector.style.setProperty('overflow', 'hidden');
   carousel.selector.appendChild(carousel.frame);
@@ -60,7 +59,7 @@ const buildFrame = carousel => options => {
 };
 
 function cloneSlides(carousel) {
-  for (let i = 0; i < carousel.nrOfClonesPerSide; i++) {
+  for (let i = 0; i < carousel.nrOfClonesPerSide(); i++) {
     const indexToClone =
       i - carousel.nrOfSlides < 0 ? i : i - carousel.nrOfSlides;
     const slideToPrepend = carousel.slides[

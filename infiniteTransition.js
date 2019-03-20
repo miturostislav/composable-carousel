@@ -5,15 +5,14 @@ const defaultOptions = {
 
 const goTo = (parentGoTo, carousel) => (index, { toRight, toLeft } = {}) => {
   return new Promise(resolve => {
+    const nrOfClonesPerSide = carousel.nrOfClonesPerSide();
     let slideIndexToTransit;
     if (toRight && index < carousel.activeSlideIndex) {
-      slideIndexToTransit =
-        carousel.nrOfClonesPerSide + carousel.nrOfSlides + index;
+      slideIndexToTransit = nrOfClonesPerSide + carousel.nrOfSlides + index;
     } else if (toLeft && index > carousel.activeSlideIndex) {
-      slideIndexToTransit =
-        carousel.nrOfClonesPerSide - (carousel.nrOfSlides - index);
+      slideIndexToTransit = nrOfClonesPerSide - (carousel.nrOfSlides - index);
     } else {
-      slideIndexToTransit = index + carousel.nrOfClonesPerSide;
+      slideIndexToTransit = index + nrOfClonesPerSide;
     }
     carousel.translateToSlide(slideIndexToTransit);
     carousel.frame.addEventListener(
@@ -45,9 +44,8 @@ const infiniteTransition = options => carousel => {
     goTo: goTo(carousel.goTo, carousel),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
-    nrOfClonesPerSide: Math.ceil(
-      carousel.visibleSlides + carousel.slidesToScroll - 1
-    ),
+    nrOfClonesPerSide: () =>
+      Math.ceil(carousel.visibleSlides + carousel.slidesToScroll - 1),
     transitionOptions: Object.assign({}, defaultOptions, options),
     build: () => {
       buildCarousel();

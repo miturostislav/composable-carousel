@@ -4,11 +4,11 @@ const responsiveSliderFrame = responsiveOptions => carousel => {
   let currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
 
   carousel.build = () => {
-    reCreateFrame(responsiveOptions, carousel);
+    buildFrame(responsiveOptions, carousel);
     window.addEventListener('resize', () => {
       if (currentBreakpoint !== getCurrentBreakpoint(responsiveOptions)) {
         currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
-        reCreateFrame(responsiveOptions, carousel);
+        buildFrame(responsiveOptions, carousel);
       }
     });
   };
@@ -16,10 +16,11 @@ const responsiveSliderFrame = responsiveOptions => carousel => {
 
 export default responsiveSliderFrame;
 
-function reCreateFrame(responsiveOptions, carousel) {
+function buildFrame(responsiveOptions, carousel) {
   const currentOptions = responsiveOptions.find(
     responsiveOption =>
       responsiveOption.breakpoint === getCurrentBreakpoint(responsiveOptions)
   ).options;
-  carousel.buildFrame(currentOptions);
+  Object.assign(carousel, currentOptions);
+  carousel.buildFrame();
 }
