@@ -7,10 +7,10 @@ export default function dots(carousel) {
       setActiveDot(carousel);
     },
   });
-  setActiveDot(carousel);
   carousel.api.dots = {
     dotsList,
   };
+  setActiveDot(carousel);
 }
 
 function createDotsList(carousel) {
@@ -33,7 +33,7 @@ function createDotItem(carousel, index) {
 }
 
 function setActiveDot(carousel) {
-  const dots = carousel.dotsList.children;
+  const dots = carousel.api.dots.dotsList.children;
   const activeDotIndex = nrOfActiveDot(carousel);
   [].forEach.call(dots, dot => {
     dot.classList.remove('active');
