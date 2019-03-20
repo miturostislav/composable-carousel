@@ -1,4 +1,4 @@
-export default function dots(carousel) {
+const dots = carousel => () => {
   const dotsList = createDotsList(carousel);
   const goTo = carousel.goTo;
   Object.assign(carousel, {
@@ -11,7 +11,9 @@ export default function dots(carousel) {
     dotsList,
   };
   setActiveDot(carousel);
-}
+};
+
+export default dots;
 
 function createDotsList(carousel) {
   const dotsList = document.createElement('ul');
