@@ -1,4 +1,4 @@
-const dots = carousel => () => {
+const dots = () => carousel => {
   const dotsList = createDotsList(carousel);
   const goTo = carousel.goTo;
   Object.assign(carousel, {
