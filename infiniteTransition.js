@@ -39,13 +39,21 @@ const goToPrev = carousel => () =>
   carousel.goTo(carousel.prevIndexToScroll(), { toLeft: true });
 
 const infiniteTransition = options => carousel => {
+  const buildCarousel = carousel.build;
+
   Object.assign(carousel, {
     goTo: goTo(carousel.goTo, carousel),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
+    nrOfClonesPerSide: Math.ceil(
+      carousel.visibleSlides + carousel.slidesToScroll - 1
+    ),
     transitionOptions: Object.assign({}, defaultOptions, options),
+    build: () => {
+      buildCarousel();
+      setCarouselTransition(carousel);
+    },
   });
-  setCarouselTransition(carousel);
 };
 
 export default infiniteTransition;

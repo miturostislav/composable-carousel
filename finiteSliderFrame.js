@@ -1,4 +1,34 @@
-import { createFrame, onSliderFrameInit } from './sliderFrameUtils';
+import {
+  createFrame,
+  onSliderFrameInit,
+  defaultOptions,
+} from './sliderFrameUtils';
+
+const finiteSliderFrame = options => carousel => {
+  Object.assign(carousel, defaultOptions, options, {
+    nextIndexToScroll: nextIndexToScroll(carousel),
+    prevIndexToScroll: prevIndexToScroll(carousel),
+    goTo: goTo(carousel),
+    goToNext: goToNext(carousel),
+    goToPrev: goToPrev(carousel),
+    buildFrame: buildFrame(carousel),
+    onInit: onSliderFrameInit(carousel.onInit),
+    build: () => carousel.buildFrame(carousel),
+  });
+};
+
+export default finiteSliderFrame;
+
+const buildFrame = carousel => options => {
+  Object.assign(carousel, defaultOptions, options);
+  carousel.frame = createFrame({
+    nrOfTotalSlideElements: carousel.nrOfSlides,
+    ...carousel,
+  });
+  carousel.selector.style.setProperty('overflow', 'hidden');
+  carousel.selector.appendChild(carousel.frame);
+  carousel.goTo(carousel.activeSlideIndex);
+};
 
 const goTo = carousel => index => {
   carousel.frame.style.setProperty(
@@ -28,32 +58,3 @@ const prevIndexToScroll = carousel => () => {
     return nextIndex;
   }
 };
-const buildFrame = carousel => options => {
-  Object.assign(carousel, defaultOptions, options);
-  carousel.frame = createFrame({
-    nrOfTotalSlideElements: carousel.nrOfSlides,
-    ...carousel,
-  });
-  carousel.selector.style.setProperty('overflow', 'hidden');
-  carousel.selector.appendChild(carousel.frame);
-  carousel.goTo(carousel.activeSlideIndex);
-};
-const defaultOptions = {
-  visibleSlides: 1,
-  slidesToScroll: 1,
-  activeSlideIndex: 0,
-};
-const finiteSliderFrame = options => carousel => {
-  Object.assign(carousel, defaultOptions, options, {
-    nextIndexToScroll: nextIndexToScroll(carousel),
-    prevIndexToScroll: prevIndexToScroll(carousel),
-    goTo: goTo(carousel),
-    goToNext: goToNext(carousel),
-    goToPrev: goToPrev(carousel),
-    buildFrame: buildFrame(carousel),
-    onInit: onSliderFrameInit(carousel.onInit),
-  });
-  carousel.buildFrame(options);
-};
-
-export default finiteSliderFrame;

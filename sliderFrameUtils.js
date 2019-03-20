@@ -26,3 +26,9 @@ export const onSliderFrameInit = onInit => () => {
     });
   });
 };
+
+export const defaultOptions = {
+  visibleSlides: 1,
+  slidesToScroll: 1,
+  activeSlideIndex: 0,
+};

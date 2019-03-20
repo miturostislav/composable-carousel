@@ -1,11 +1,14 @@
 const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
+  const selectorClone = selector.cloneNode(true);
   const carousel = {
     selector,
     slides: Array.from(selector.children),
     nrOfSlides: selector.children.length,
     onInit,
+    api: {},
   };
   composers.forEach(composer => composer(carousel));
+  carousel.build();
   if (typeof onInit === 'function') {
     carousel.onInit();
   }
@@ -22,9 +25,10 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
     getActiveSlideIndex() {
       return carousel.activeSlideIndex;
     },
-    compose(fn) {
-      return fn(carousel);
+    destroy() {
+      selector.parentElement.replaceChild(selectorClone, selector);
     },
+    ...carousel.api,
   };
 };
 

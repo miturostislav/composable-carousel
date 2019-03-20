@@ -53,7 +53,7 @@ const draggable = () => carousel => {
     );
   }
 
-  const draggableApi = {
+  const draggingApi = {
     start() {
       carousel.frame.addEventListener('mousedown', onStartDragging);
       carousel.frame.addEventListener('touchstart', onStartDragging);
@@ -64,9 +64,8 @@ const draggable = () => carousel => {
     },
   };
 
-  draggableApi.start();
-  carousel.draggableApi = draggableApi;
-  return draggableApi;
+  draggingApi.start();
+  carousel.api.dragging = draggingApi;
 };
 
 export default draggable;

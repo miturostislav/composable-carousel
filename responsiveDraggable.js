@@ -17,13 +17,13 @@ const responsiveDraggable = responsiveOptions => carousel => {
 export default responsiveDraggable;
 
 function handleDraggingByBreakpoint(responsiveOptions, carousel) {
-  carousel.draggableApi.stop();
+  carousel.api.dragging.stop();
   if (
     responsiveOptions.find(
       responsiveOption =>
         responsiveOption.breakpoint === getCurrentBreakpoint(responsiveOptions)
     ).isDraggable
   ) {
-    carousel.draggableApi.start();
+    carousel.api.dragging.start();
   }
 }

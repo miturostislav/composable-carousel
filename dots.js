@@ -1,16 +1,16 @@
-const goTo = (parentGoTo, carousel) => (...args) => {
-  parentGoTo(...args);
-  carousel.onDotChange();
-};
-
 export default function dots(carousel) {
   const dotsList = createDotsList(carousel);
+  const goTo = carousel.goTo;
   Object.assign(carousel, {
-    goTo: goTo(carousel.goTo, carousel),
-    onDotChange: () => setActiveDot(dotsList.children, nrOfActiveDot(carousel)),
+    goTo: (...args) => {
+      goTo(...args);
+      setActiveDot(carousel);
+    },
   });
-  setActiveDot(dotsList.children, 0);
-  return dotsList;
+  setActiveDot(carousel);
+  carousel.api.dots = {
+    dotsList,
+  };
 }
 
 function createDotsList(carousel) {
@@ -32,7 +32,9 @@ function createDotItem(carousel, index) {
   return dotItem;
 }
 
-function setActiveDot(dots, activeDotIndex) {
+function setActiveDot(carousel) {
+  const dots = carousel.dotsList.children;
+  const activeDotIndex = nrOfActiveDot(carousel);
   [].forEach.call(dots, dot => {
     dot.classList.remove('active');
   });

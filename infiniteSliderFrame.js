@@ -1,4 +1,25 @@
-import { createFrame, onSliderFrameInit } from './sliderFrameUtils';
+import {
+  createFrame,
+  onSliderFrameInit,
+  defaultOptions,
+} from './sliderFrameUtils';
+
+const infiniteSliderFrame = options => carousel => {
+  Object.assign(carousel, defaultOptions, options, {
+    nextIndexToScroll: nextIndexToScroll(carousel),
+    prevIndexToScroll: prevIndexToScroll(carousel),
+    goTo: goTo(carousel),
+    goToNext: goToNext(carousel),
+    goToPrev: goToPrev(carousel),
+    translateToSlide: translateToSlide(carousel),
+    buildFrame: buildFrame(carousel),
+    onInit: onSliderFrameInit(carousel.onInit),
+    nrOfClonesPerSide: Math.ceil(carousel.visibleSlides - 1),
+    build: () => carousel.buildFrame(carousel),
+  });
+};
+
+export default infiniteSliderFrame;
 
 const translateToSlide = carousel => slideIndex => {
   carousel.frame.style.setProperty(
@@ -29,9 +50,6 @@ const prevIndexToScroll = carousel => () => {
 
 const buildFrame = carousel => options => {
   Object.assign(carousel, defaultOptions, options);
-  carousel.nrOfClonesPerSide = Math.ceil(
-    carousel.visibleSlides + carousel.slidesToScroll - 1
-  );
   carousel.nrOfTotalSlideElements =
     carousel.nrOfSlides + carousel.nrOfClonesPerSide * 2;
   carousel.frame = createFrame(carousel);
@@ -40,28 +58,6 @@ const buildFrame = carousel => options => {
   cloneSlides(carousel);
   carousel.goTo(carousel.activeSlideIndex);
 };
-
-const defaultOptions = {
-  visibleSlides: 1,
-  slidesToScroll: 1,
-  activeSlideIndex: 0,
-};
-
-const infiniteSliderFrame = options => carousel => {
-  Object.assign(carousel, {
-    nextIndexToScroll: nextIndexToScroll(carousel),
-    prevIndexToScroll: prevIndexToScroll(carousel),
-    goTo: goTo(carousel),
-    goToNext: goToNext(carousel),
-    goToPrev: goToPrev(carousel),
-    translateToSlide: translateToSlide(carousel),
-    buildFrame: buildFrame(carousel),
-    onInit: onSliderFrameInit(carousel.onInit),
-  });
-  carousel.buildFrame(options);
-};
-
-export default infiniteSliderFrame;
 
 function cloneSlides(carousel) {
   for (let i = 0; i < carousel.nrOfClonesPerSide; i++) {

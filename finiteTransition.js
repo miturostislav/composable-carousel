@@ -8,7 +8,7 @@ const goTo = (parentGoTo, carousel) => index => {
     carousel.frame.addEventListener(
       'transitionend',
       function onTransitionEnd() {
-        carousel.selector.removeEventListener('transitioned', onTransitionEnd);
+        carousel.selector.removeEventListener('transitionend', onTransitionEnd);
         resolve();
       }
     );
