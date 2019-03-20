@@ -1,6 +1,6 @@
 {
   "name": "composable-carousel",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "lightweight composable carousel",
   "scripts": {
     "eslint": "eslint --fix *.js",
