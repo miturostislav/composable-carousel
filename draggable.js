@@ -53,6 +53,7 @@ const draggable = () => carousel => {
     );
   }
 
+  const buildCarousel = carousel.build;
   const draggingApi = {
     start() {
       carousel.frame.addEventListener('mousedown', onStartDragging);
@@ -64,8 +65,11 @@ const draggable = () => carousel => {
     },
   };
 
-  draggingApi.start();
   carousel.api.dragging = draggingApi;
+  carousel.build = () => {
+    buildCarousel();
+    draggingApi.start();
+  };
 };
 
 export default draggable;

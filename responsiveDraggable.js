@@ -3,15 +3,21 @@ import { getCurrentBreakpoint } from './responsiveUtils';
 
 const responsiveDraggable = responsiveOptions => carousel => {
   let currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
-  draggable()(carousel);
-  handleDraggingByBreakpoint(responsiveOptions, carousel);
+  let buildCarousel;
 
-  window.addEventListener('resize', () => {
-    if (currentBreakpoint !== getCurrentBreakpoint(responsiveOptions)) {
-      currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
-      handleDraggingByBreakpoint(responsiveOptions, carousel);
-    }
-  });
+  draggable()(carousel);
+  buildCarousel = carousel.build;
+  carousel.build = () => {
+    buildCarousel();
+    handleDraggingByBreakpoint(responsiveOptions, carousel);
+
+    window.addEventListener('resize', () => {
+      if (currentBreakpoint !== getCurrentBreakpoint(responsiveOptions)) {
+        currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
+        handleDraggingByBreakpoint(responsiveOptions, carousel);
+      }
+    });
+  };
 };
 
 export default responsiveDraggable;
