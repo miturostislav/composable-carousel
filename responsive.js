@@ -1,7 +1,7 @@
 import { getCurrentBreakpoint } from './responsiveUtils';
 import { noop } from './utils';
 
-const responsive = (responsiveOptions, { onResize }) => carousel => {
+const responsive = (responsiveOptions, { onResize } = {}) => carousel => {
   let currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
   const buildCarousel = carousel.build;
   const destroyCarousel = carousel.destroy;
