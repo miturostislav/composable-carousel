@@ -1,43 +1,43 @@
-const defaultOptions = {
-  ms: 200,
-  easing: 'ease-out',
-};
+import {
+  setCarouselTransition,
+  removeCarouselTransition,
+  defaultOptions,
+} from './transitionUtils';
 
-const goTo = (parentGoTo, carousel) => index => {
-  return new Promise(resolve => {
-    if (carousel.areEnoughSlides()) {
-      carousel.frame.addEventListener(
-        'transitionend',
-        function onTransitionEnd() {
-          carousel.selector.removeEventListener(
+const goTo = (parentGoTo, carousel) => {
+  let isAnimating = false;
+  return index =>
+    new Promise(resolve => {
+      if (carousel.areEnoughSlides() && !isAnimating) {
+        if (index !== carousel.activeSlideIndex) {
+          isAnimating = true;
+          setCarouselTransition(carousel);
+          parentGoTo(index);
+          carousel.frame.addEventListener(
             'transitionend',
-            onTransitionEnd
+            function onTransitionEnd() {
+              carousel.selector.removeEventListener(
+                'transitionend',
+                onTransitionEnd
+              );
+              removeCarouselTransition(carousel);
+              isAnimating = false;
+              resolve();
+            }
           );
+        } else {
+          parentGoTo(index);
           resolve();
         }
-      );
-      parentGoTo(index);
-    }
-  });
+      }
+    });
 };
 
 const finiteTransition = options => carousel => {
-  const finalOptions = Object.assign({}, defaultOptions, options);
-  const buildCarousel = carousel.build;
-  const destroyCarousel = carousel.destroy;
-  Object.assign(carousel, { goTo: goTo(carousel.goTo, carousel) });
-  carousel.build = () => {
-    return buildCarousel().then(() => {
-      carousel.frame.style.setProperty(
-        'transition',
-        `transform ${finalOptions.ms}ms ${finalOptions.easing}`
-      );
-    });
-  };
-  carousel.destroy = () => {
-    carousel.frame.style.removeProperty('transition');
-    return destroyCarousel();
-  };
+  Object.assign(carousel, {
+    goTo: goTo(carousel.goTo, carousel),
+    transitionOptions: Object.assign({}, defaultOptions, options),
+  });
 };
 
 export default finiteTransition;

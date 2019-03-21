@@ -4,8 +4,8 @@ const dots = () => carousel => {
   const destroyCarousel = carousel.destroy;
   Object.assign(carousel, {
     goTo: (...args) => {
-      goTo(...args);
       setActiveDot(carousel);
+      return goTo(...args);
     },
     destroy() {
       if (dotsList.parentElement) {

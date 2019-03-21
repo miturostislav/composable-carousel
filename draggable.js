@@ -17,6 +17,7 @@ const draggable = (isDraggable = true) => carousel => {
     }
 
     function onEnd() {
+      draggingApi.stop();
       draggedValue = getTranslateValue(carousel) - initialTranslateValue;
       carousel.frame.removeEventListener('mousemove', onMove);
       carousel.frame.removeEventListener('mouseup', onEnd);
@@ -26,12 +27,12 @@ const draggable = (isDraggable = true) => carousel => {
       carousel.frame.removeEventListener('touchcancel', onEnd);
       if (draggedValue) {
         if (draggedValue < 0) {
-          carousel.goToNext();
+          carousel.goToNext().then(draggingApi.start);
         } else {
-          carousel.goToPrev();
+          carousel.goToPrev().then(draggingApi.start);
         }
       } else {
-        carousel.goTo(carousel.activeSlideIndex);
+        carousel.goTo(carousel.activeSlideIndex).then(draggingApi.start);
       }
     }
 

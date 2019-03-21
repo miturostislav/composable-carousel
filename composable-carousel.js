@@ -14,13 +14,13 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
   carousel.build().then(onInit || noop);
   api = {
     goToNext() {
-      carousel.goToNext();
+      return carousel.goToNext();
     },
     goToPrev() {
-      carousel.goToPrev();
+      return carousel.goToPrev();
     },
     goTo(index) {
-      carousel.goTo(index);
+      return carousel.goTo(index);
     },
     getActiveSlideIndex() {
       return carousel.activeSlideIndex;

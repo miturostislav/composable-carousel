@@ -35,6 +35,7 @@ const goTo = carousel => index => {
     carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
     carousel.activeSlideIndex = index;
   }
+  return Promise.resolve();
 };
 
 const goToNext = carousel => () => carousel.goTo(carousel.nextIndexToScroll());
