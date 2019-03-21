@@ -13,6 +13,7 @@ const infiniteSliderFrame = options => carousel => {
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
     translateToSlide: translateToSlide(carousel),
+    areEnoughSlides: () => carousel.nrOfSlides > carousel.visibleSlides,
     buildFrame: buildFrame(carousel),
     nrOfClonesPerSide: () => Math.ceil(carousel.visibleSlides - 1),
     build: () => carousel.buildFrame(),
@@ -30,8 +31,10 @@ const translateToSlide = carousel => slideIndex => {
 };
 
 const goTo = carousel => index => {
-  carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
-  carousel.activeSlideIndex = index;
+  if (carousel.areEnoughSlides()) {
+    carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
+    carousel.activeSlideIndex = index;
+  }
 };
 
 const goToNext = carousel => () => carousel.goTo(carousel.nextIndexToScroll());
@@ -50,10 +53,13 @@ const prevIndexToScroll = carousel => () => {
 };
 
 const buildFrame = carousel => () => {
-  carousel.nrOfTotalSlideElements =
-    carousel.nrOfSlides + carousel.nrOfClonesPerSide() * 2;
+  carousel.nrOfTotalSlideElements = carousel.areEnoughSlides()
+    ? carousel.nrOfSlides + carousel.nrOfClonesPerSide() * 2
+    : carousel.nrOfSlides;
   carousel.frame = createFrame(carousel);
-  cloneSlides(carousel);
+  if (carousel.areEnoughSlides()) {
+    cloneSlides(carousel);
+  }
   carousel.goTo(carousel.activeSlideIndex);
   return isFrameReady();
 };

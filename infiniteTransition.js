@@ -5,30 +5,32 @@ const defaultOptions = {
 
 const goTo = (parentGoTo, carousel) => (index, { toRight, toLeft } = {}) => {
   return new Promise(resolve => {
-    const nrOfClonesPerSide = carousel.nrOfClonesPerSide();
-    let slideIndexToTransit;
-    if (toRight && index < carousel.activeSlideIndex) {
-      slideIndexToTransit = nrOfClonesPerSide + carousel.nrOfSlides + index;
-    } else if (toLeft && index > carousel.activeSlideIndex) {
-      slideIndexToTransit = nrOfClonesPerSide - (carousel.nrOfSlides - index);
-    } else {
-      slideIndexToTransit = index + nrOfClonesPerSide;
-    }
-    carousel.translateToSlide(slideIndexToTransit);
-    carousel.frame.addEventListener(
-      'transitionend',
-      function onTransitionEnd() {
-        carousel.frame.removeEventListener('transitionend', onTransitionEnd);
-        removeCarouselTransition(carousel);
-        parentGoTo(index);
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setCarouselTransition(carousel);
-          });
-        });
-        resolve();
+    if (carousel.areEnoughSlides()) {
+      const nrOfClonesPerSide = carousel.nrOfClonesPerSide();
+      let slideIndexToTransit;
+      if (toRight && index < carousel.activeSlideIndex) {
+        slideIndexToTransit = nrOfClonesPerSide + carousel.nrOfSlides + index;
+      } else if (toLeft && index > carousel.activeSlideIndex) {
+        slideIndexToTransit = nrOfClonesPerSide - (carousel.nrOfSlides - index);
+      } else {
+        slideIndexToTransit = index + nrOfClonesPerSide;
       }
-    );
+      carousel.translateToSlide(slideIndexToTransit);
+      carousel.frame.addEventListener(
+        'transitionend',
+        function onTransitionEnd() {
+          carousel.frame.removeEventListener('transitionend', onTransitionEnd);
+          removeCarouselTransition(carousel);
+          parentGoTo(index);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setCarouselTransition(carousel);
+            });
+          });
+          resolve();
+        }
+      );
+    }
   });
 };
 

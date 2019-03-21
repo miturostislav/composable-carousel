@@ -5,14 +5,19 @@ const defaultOptions = {
 
 const goTo = (parentGoTo, carousel) => index => {
   return new Promise(resolve => {
-    carousel.frame.addEventListener(
-      'transitionend',
-      function onTransitionEnd() {
-        carousel.selector.removeEventListener('transitionend', onTransitionEnd);
-        resolve();
-      }
-    );
-    parentGoTo(index);
+    if (carousel.areEnoughSlides()) {
+      carousel.frame.addEventListener(
+        'transitionend',
+        function onTransitionEnd() {
+          carousel.selector.removeEventListener(
+            'transitionend',
+            onTransitionEnd
+          );
+          resolve();
+        }
+      );
+      parentGoTo(index);
+    }
   });
 };
 

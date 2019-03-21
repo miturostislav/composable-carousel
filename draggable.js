@@ -57,8 +57,10 @@ const draggable = (isDraggable = true) => carousel => {
   const destroyCarousel = carousel.destroy;
   const draggingApi = {
     start() {
-      carousel.frame.addEventListener('mousedown', onStartDragging);
-      carousel.frame.addEventListener('touchstart', onStartDragging);
+      if (carousel.areEnoughSlides()) {
+        carousel.frame.addEventListener('mousedown', onStartDragging);
+        carousel.frame.addEventListener('touchstart', onStartDragging);
+      }
     },
     stop() {
       carousel.frame.removeEventListener('mousedown', onStartDragging);

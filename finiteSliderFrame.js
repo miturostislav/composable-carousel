@@ -13,6 +13,7 @@ const finiteSliderFrame = options => carousel => {
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
     buildFrame: buildFrame(carousel),
+    areEnoughSlides: () => carousel.nrOfSlides > carousel.visibleSlides,
     build: () => carousel.buildFrame(),
     destroy: () => destroyFrame(carousel),
   });
@@ -28,11 +29,13 @@ const buildFrame = carousel => () => {
 };
 
 const goTo = carousel => index => {
-  carousel.frame.style.setProperty(
-    'transform',
-    `translateX(-${(100 / carousel.nrOfSlides) * index}%)`
-  );
-  carousel.activeSlideIndex = index;
+  if (carousel.areEnoughSlides()) {
+    carousel.frame.style.setProperty(
+      'transform',
+      `translateX(-${(100 / carousel.nrOfSlides) * index}%)`
+    );
+    carousel.activeSlideIndex = index;
+  }
 };
 const goToNext = carousel => () => carousel.goTo(carousel.nextIndexToScroll());
 const goToPrev = carousel => () => carousel.goTo(carousel.prevIndexToScroll());
