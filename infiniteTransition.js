@@ -39,6 +39,7 @@ const goToPrev = carousel => () =>
 
 const infiniteTransition = options => carousel => {
   const buildCarousel = carousel.build;
+  const destroyCarousel = carousel.destroy;
 
   Object.assign(carousel, {
     goTo: goTo(carousel.goTo, carousel),
@@ -47,10 +48,13 @@ const infiniteTransition = options => carousel => {
     nrOfClonesPerSide: () =>
       Math.ceil(carousel.visibleSlides + carousel.slidesToScroll - 1),
     transitionOptions: Object.assign({}, defaultOptions, options),
-    build: () => {
-      return buildCarousel().then(() => {
+    build: () =>
+      buildCarousel().then(() => {
         setCarouselTransition(carousel);
-      });
+      }),
+    destroy: () => {
+      removeCarouselTransition(carousel);
+      return destroyCarousel();
     },
   });
 };

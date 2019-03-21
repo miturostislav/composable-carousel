@@ -1,4 +1,9 @@
-import { createFrame, isFrameReady, defaultOptions } from './sliderFrameUtils';
+import {
+  createFrame,
+  isFrameReady,
+  defaultOptions,
+  destroyFrame,
+} from './sliderFrameUtils';
 
 const infiniteSliderFrame = options => carousel => {
   Object.assign(carousel, defaultOptions, options, {
@@ -11,6 +16,7 @@ const infiniteSliderFrame = options => carousel => {
     buildFrame: buildFrame(carousel),
     nrOfClonesPerSide: () => Math.ceil(carousel.visibleSlides - 1),
     build: () => carousel.buildFrame(),
+    destroy: () => destroyFrame(carousel),
   });
 };
 
@@ -47,8 +53,6 @@ const buildFrame = carousel => () => {
   carousel.nrOfTotalSlideElements =
     carousel.nrOfSlides + carousel.nrOfClonesPerSide() * 2;
   carousel.frame = createFrame(carousel);
-  carousel.selector.style.setProperty('overflow', 'hidden');
-  carousel.selector.appendChild(carousel.frame);
   cloneSlides(carousel);
   carousel.goTo(carousel.activeSlideIndex);
   return isFrameReady();

@@ -1,14 +1,25 @@
-const autoSlide = (time = 2000) => carousel => {
+const autoSlide = ({
+  autoSlideTime = 2000,
+  isAutoSlideActive = true,
+} = {}) => carousel => {
   let intervalID;
   const buildCarousel = carousel.build;
+  const destroyCarousel = carousel.destroy;
 
-  carousel.build = () => {
-    buildCarousel();
-    startAutoSlide();
-  };
+  Object.assign(carousel, {
+    autoSlideTime,
+    isAutoSlideActive,
+    build: () =>
+      buildCarousel.then(() => {
+        clearInterval(intervalID);
+        if (isAutoSlideActive) {
+          startAutoSlide();
+        }
+      }),
+    destroy: () => destroyCarousel().then(() => clearInterval(intervalID)),
+  });
   carousel.api.autoSlide = {
     start() {
-      clearInterval(intervalID);
       startAutoSlide();
     },
     stop() {
@@ -17,9 +28,10 @@ const autoSlide = (time = 2000) => carousel => {
   };
 
   function startAutoSlide() {
+    clearInterval(intervalID);
     intervalID = setInterval(() => {
       carousel.goToNext();
-    }, time);
+    }, carousel.autoSlideTime);
   }
 };
 

@@ -1,15 +1,13 @@
 const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
-  const selectorClone = selector.cloneNode(true);
-  const carousel = {
+  let carousel = {
     selector,
     slides: Array.from(selector.children),
     nrOfSlides: selector.children.length,
     onInit,
     api: {},
   };
-  composers.forEach(composer => composer(carousel));
-  carousel.build().then(onInit || noop);
-  return {
+
+  let api = {
     goToNext() {
       carousel.goToNext();
     },
@@ -23,10 +21,19 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
       return carousel.activeSlideIndex;
     },
     destroy() {
-      selector.parentElement.replaceChild(selectorClone, selector);
+      carousel.destroy().then(() => {
+        Object.keys(api).forEach(key => {
+          delete api[key];
+        });
+      });
+      api = null;
     },
     ...carousel.api,
   };
+  composers.forEach(composer => composer(carousel));
+  carousel.build().then(onInit || noop);
+
+  return api;
 };
 
 export default composeCarousel;

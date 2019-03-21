@@ -1,4 +1,4 @@
-const draggable = () => carousel => {
+const draggable = (isDraggable = true) => carousel => {
   function onStartDragging(onStartEvent) {
     const initialTranslateValue = getTranslateValue(carousel);
     let draggedValue = 0;
@@ -54,6 +54,7 @@ const draggable = () => carousel => {
   }
 
   const buildCarousel = carousel.build;
+  const destroyCarousel = carousel.destroy;
   const draggingApi = {
     start() {
       carousel.frame.addEventListener('mousedown', onStartDragging);
@@ -65,9 +66,18 @@ const draggable = () => carousel => {
     },
   };
 
+  Object.assign(carousel, { isDraggable });
   carousel.api.dragging = draggingApi;
   carousel.build = () => {
-    return buildCarousel().then(draggingApi.start);
+    draggingApi.stop();
+    return buildCarousel().then(() => {
+      if (carousel.isDraggable) {
+        draggingApi.start();
+      }
+    });
+  };
+  carousel.destroy = () => {
+    return destroyCarousel().then(draggingApi.stop);
   };
 };
 

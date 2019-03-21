@@ -1,12 +1,12 @@
 import composeCarousel from '../composable-carousel';
 import infiniteSliderFrame from '../infiniteSliderFrame';
-import responsiveSliderFrame from '../responsiveSliderFrame';
+import responsive from '../responsive';
 import draggable from '../draggable';
 import responsiveDraggable from '../responsiveDraggable';
 
 const carousel = composeCarousel(document.querySelector('#selector'))(
   infiniteSliderFrame(),
-  responsiveSliderFrame([
+  responsive([
     {
       breakpoint: 1200,
       options: {

@@ -1,10 +1,17 @@
 const dots = () => carousel => {
-  const dotsList = createDotsList(carousel);
+  let dotsList = createDotsList(carousel);
   const goTo = carousel.goTo;
+  const destroyCarousel = carousel.destroy;
   Object.assign(carousel, {
     goTo: (...args) => {
       goTo(...args);
       setActiveDot(carousel);
+    },
+    destroy() {
+      if (dotsList.parentElement) {
+        dotsList.parentElement.removeChild(dotsList);
+      }
+      return destroyCarousel();
     },
   });
   carousel.api.dots = {

@@ -1,4 +1,9 @@
-import { createFrame, isFrameReady, defaultOptions } from './sliderFrameUtils';
+import {
+  createFrame,
+  isFrameReady,
+  defaultOptions,
+  destroyFrame,
+} from './sliderFrameUtils';
 
 const finiteSliderFrame = options => carousel => {
   Object.assign(carousel, defaultOptions, options, {
@@ -9,18 +14,15 @@ const finiteSliderFrame = options => carousel => {
     goToPrev: goToPrev(carousel),
     buildFrame: buildFrame(carousel),
     build: () => carousel.buildFrame(),
+    destroy: () => destroyFrame(carousel),
   });
 };
 
 export default finiteSliderFrame;
 
 const buildFrame = carousel => () => {
-  carousel.frame = createFrame({
-    nrOfTotalSlideElements: carousel.nrOfSlides,
-    ...carousel,
-  });
-  carousel.selector.style.setProperty('overflow', 'hidden');
-  carousel.selector.appendChild(carousel.frame);
+  carousel.nrOfTotalSlideElements = carousel.nrOfSlides;
+  carousel.frame = createFrame(carousel);
   carousel.goTo(carousel.activeSlideIndex);
   return isFrameReady();
 };

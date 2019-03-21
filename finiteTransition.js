@@ -19,6 +19,7 @@ const goTo = (parentGoTo, carousel) => index => {
 const finiteTransition = options => carousel => {
   const finalOptions = Object.assign({}, defaultOptions, options);
   const buildCarousel = carousel.build;
+  const destroyCarousel = carousel.destroy;
   Object.assign(carousel, { goTo: goTo(carousel.goTo, carousel) });
   carousel.build = () => {
     return buildCarousel().then(() => {
@@ -27,6 +28,10 @@ const finiteTransition = options => carousel => {
         `transform ${finalOptions.ms}ms ${finalOptions.easing}`
       );
     });
+  };
+  carousel.destroy = () => {
+    carousel.frame.style.removeProperty('transition');
+    return destroyCarousel();
   };
 };
 
