@@ -48,8 +48,9 @@ const infiniteTransition = options => carousel => {
       Math.ceil(carousel.visibleSlides + carousel.slidesToScroll - 1),
     transitionOptions: Object.assign({}, defaultOptions, options),
     build: () => {
-      buildCarousel();
-      setCarouselTransition(carousel);
+      return buildCarousel().then(() => {
+        setCarouselTransition(carousel);
+      });
     },
   });
 };

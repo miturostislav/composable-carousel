@@ -67,8 +67,7 @@ const draggable = () => carousel => {
 
   carousel.api.dragging = draggingApi;
   carousel.build = () => {
-    buildCarousel();
-    draggingApi.start();
+    return buildCarousel().then(draggingApi.start);
   };
 };
 

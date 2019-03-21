@@ -1,11 +1,6 @@
-const autoSlide = time => carousel => {
+const autoSlide = (time = 2000) => carousel => {
   let intervalID;
   const buildCarousel = carousel.build;
-  function startAutoSlide() {
-    intervalID = setInterval(() => {
-      carousel.goToNext();
-    }, time);
-  }
 
   carousel.build = () => {
     buildCarousel();
@@ -20,6 +15,12 @@ const autoSlide = time => carousel => {
       clearInterval(intervalID);
     },
   };
+
+  function startAutoSlide() {
+    intervalID = setInterval(() => {
+      carousel.goToNext();
+    }, time);
+  }
 };
 
 export default autoSlide;

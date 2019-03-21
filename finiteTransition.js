@@ -21,11 +21,12 @@ const finiteTransition = options => carousel => {
   const buildCarousel = carousel.build;
   Object.assign(carousel, { goTo: goTo(carousel.goTo, carousel) });
   carousel.build = () => {
-    buildCarousel();
-    carousel.frame.style.setProperty(
-      'transition',
-      `transform ${finalOptions.ms}ms ${finalOptions.easing}`
-    );
+    return buildCarousel().then(() => {
+      carousel.frame.style.setProperty(
+        'transition',
+        `transform ${finalOptions.ms}ms ${finalOptions.easing}`
+      );
+    });
   };
 };
 

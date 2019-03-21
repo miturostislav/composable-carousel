@@ -8,14 +8,15 @@ const responsiveDraggable = responsiveOptions => carousel => {
   draggable()(carousel);
   buildCarousel = carousel.build;
   carousel.build = () => {
-    buildCarousel();
-    handleDraggingByBreakpoint(responsiveOptions, carousel);
+    return buildCarousel().then(() => {
+      handleDraggingByBreakpoint(responsiveOptions, carousel);
 
-    window.addEventListener('resize', () => {
-      if (currentBreakpoint !== getCurrentBreakpoint(responsiveOptions)) {
-        currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
-        handleDraggingByBreakpoint(responsiveOptions, carousel);
-      }
+      window.addEventListener('resize', () => {
+        if (currentBreakpoint !== getCurrentBreakpoint(responsiveOptions)) {
+          currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
+          handleDraggingByBreakpoint(responsiveOptions, carousel);
+        }
+      });
     });
   };
 };

@@ -19,10 +19,12 @@ export function createFrame({
   return newFrame;
 }
 
-export const onSliderFrameInit = onInit => () => {
-  requestAnimationFrame(() => {
+export const isFrameReady = () => {
+  return new Promise(resolve => {
     requestAnimationFrame(() => {
-      onInit();
+      requestAnimationFrame(() => {
+        resolve();
+      });
     });
   });
 };

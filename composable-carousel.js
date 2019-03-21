@@ -8,10 +8,7 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
     api: {},
   };
   composers.forEach(composer => composer(carousel));
-  carousel.build();
-  if (typeof onInit === 'function') {
-    carousel.onInit();
-  }
+  carousel.build().then(onInit || noop);
   return {
     goToNext() {
       carousel.goToNext();
@@ -33,3 +30,5 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
 };
 
 export default composeCarousel;
+
+function noop() {}
