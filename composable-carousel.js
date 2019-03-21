@@ -1,3 +1,5 @@
+import { noop } from './utils';
+
 const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
   let carousel = {
     selector,
@@ -23,6 +25,9 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
     getActiveSlideIndex() {
       return carousel.activeSlideIndex;
     },
+    areEnoughSlides() {
+      return carousel.areEnoughSlides();
+    },
     destroy() {
       carousel.destroy().then(() => {
         Object.keys(api).forEach(key => {
@@ -38,5 +43,3 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
 };
 
 export default composeCarousel;
-
-function noop() {}
