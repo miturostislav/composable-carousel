@@ -77,7 +77,8 @@ const draggable = (isDraggable = true) => carousel => {
     });
   };
   carousel.destroy = () => {
-    return destroyCarousel().then(draggingApi.stop);
+    draggingApi.stop();
+    return destroyCarousel();
   };
 };
 

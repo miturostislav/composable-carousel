@@ -28,8 +28,8 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
         Object.keys(api).forEach(key => {
           delete api[key];
         });
+        api = null;
       });
-      api = null;
     },
     ...carousel.api,
   };
