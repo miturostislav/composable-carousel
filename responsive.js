@@ -15,6 +15,7 @@ const responsive = responsiveOptions => carousel => {
       ).options
     );
     return buildCarousel().then(() => {
+      window.removeEventListener('resize', onResize);
       window.addEventListener('resize', onResize);
     });
   };

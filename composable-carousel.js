@@ -6,8 +6,11 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
     onInit,
     api: {},
   };
+  let api;
 
-  let api = {
+  composers.forEach(composer => composer(carousel));
+  carousel.build().then(onInit || noop);
+  api = {
     goToNext() {
       carousel.goToNext();
     },
@@ -30,8 +33,6 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
     },
     ...carousel.api,
   };
-  composers.forEach(composer => composer(carousel));
-  carousel.build().then(onInit || noop);
 
   return api;
 };

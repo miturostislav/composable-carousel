@@ -15,7 +15,7 @@ export function createFrame({
   newFrame.style.setProperty('display', 'flex');
   selector.style.setProperty('overflow', 'hidden');
   selector.appendChild(newFrame);
-  insertSlidesIntoFrame({ frame, slides, nrOfTotalSlideElements });
+  insertSlidesIntoFrame({ frame: newFrame, slides, nrOfTotalSlideElements });
   return newFrame;
 }
 

@@ -69,8 +69,8 @@ const draggable = (isDraggable = true) => carousel => {
   Object.assign(carousel, { isDraggable });
   carousel.api.dragging = draggingApi;
   carousel.build = () => {
-    draggingApi.stop();
     return buildCarousel().then(() => {
+      draggingApi.stop();
       if (carousel.isDraggable) {
         draggingApi.start();
       }
