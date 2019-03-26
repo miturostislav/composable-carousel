@@ -1,32 +1,44 @@
-export function createFrame({
-  nrOfTotalSlideElements,
-  visibleSlides,
-  frame,
-  selector,
-  slides,
-}) {
-  const newFrame = frame || document.createElement('div');
+export function createSliderFrame(options, carousel) {
+  Object.assign(carousel, defaultOptions, options, {
+    goTo: goTo(carousel),
+    goToNext: goToNext(carousel),
+    goToPrev: goToPrev(carousel),
+    translateToSlide: translateToSlide(carousel),
+    nrOfSlideElements: () => carousel.nrOfSlides,
+    areEnoughSlides: () => areEnoughSlides(carousel),
+    build: () => createFrame(carousel),
+    destroy: () => destroyFrame(carousel),
+  });
+}
+
+export function createFrame(carousel) {
+  const newFrame = carousel.frame || document.createElement('div');
   newFrame.innerHTML = '';
   newFrame.classList.add('frame');
   newFrame.style.setProperty(
     'width',
-    `${(100 * nrOfTotalSlideElements) / visibleSlides}%`
+    `${(100 * carousel.nrOfSlideElements()) / carousel.visibleSlides}%`
   );
   newFrame.style.setProperty('display', 'flex');
-  selector.style.setProperty('overflow', 'hidden');
-  selector.appendChild(newFrame);
-  insertSlidesIntoFrame({ frame: newFrame, slides, nrOfTotalSlideElements });
-  return newFrame;
+  carousel.selector.style.setProperty('overflow', 'hidden');
+  carousel.selector.appendChild(newFrame);
+  carousel.frame = newFrame;
+  insertSlidesIntoFrame(carousel);
+  return isFrameReady();
 }
 
-export function insertSlidesIntoFrame({
-  frame,
-  slides,
-  nrOfTotalSlideElements,
-}) {
-  slides.forEach(slide => {
-    slide.style.setProperty('width', `${100 / nrOfTotalSlideElements}%`);
-    frame.appendChild(slide);
+export function destroyFrame(carousel) {
+  removeSlidesFromFrame(carousel);
+  carousel.selector.style.removeProperty('overflow');
+  carousel.selector.removeChild(carousel.frame);
+  carousel.frame = null;
+  return isFrameReady();
+}
+
+export function insertSlidesIntoFrame(carousel) {
+  carousel.slides.forEach(slide => {
+    slide.style.setProperty('width', `${100 / carousel.nrOfSlideElements()}%`);
+    carousel.frame.appendChild(slide);
   });
 }
 
@@ -37,13 +49,30 @@ export function removeSlidesFromFrame({ slides, selector }) {
   });
 }
 
-export function destroyFrame(carousel) {
-  removeSlidesFromFrame(carousel);
-  carousel.selector.style.removeProperty('overflow');
-  carousel.selector.removeChild(carousel.frame);
-  carousel.frame = null;
-  return isFrameReady();
+export function areEnoughSlides(carousel) {
+  return carousel.nrOfSlides > carousel.visibleSlides;
 }
+
+export const translateToSlide = carousel => index => {
+  carousel.frame.style.setProperty(
+    'transform',
+    `translateX(-${(100 / carousel.nrOfSlideElements()) * index}%)`
+  );
+};
+
+export const goTo = carousel => index => {
+  if (carousel.areEnoughSlides()) {
+    carousel.translateToSlide(index);
+    carousel.activeSlideIndex = index;
+  }
+  return Promise.resolve();
+};
+
+export const goToNext = carousel => () =>
+  carousel.goTo(carousel.nextIndexToScroll());
+
+export const goToPrev = carousel => () =>
+  carousel.goTo(carousel.prevIndexToScroll());
 
 export const isFrameReady = () => {
   return new Promise(resolve => {

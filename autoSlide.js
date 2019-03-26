@@ -10,7 +10,7 @@ const autoSlide = ({
     autoSlideTime,
     isAutoSlideActive,
     build: () =>
-      buildCarousel.then(() => {
+      buildCarousel().then(() => {
         clearInterval(intervalID);
         if (isAutoSlideActive) {
           startAutoSlide();

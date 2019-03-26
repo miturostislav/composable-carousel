@@ -16,7 +16,7 @@ const goTo = (parentGoTo, carousel) => {
           carousel.frame.addEventListener(
             'transitionend',
             function onTransitionEnd() {
-              carousel.selector.removeEventListener(
+              carousel.frame.removeEventListener(
                 'transitionend',
                 onTransitionEnd
               );
@@ -33,10 +33,9 @@ const goTo = (parentGoTo, carousel) => {
     });
 };
 
-const finiteTransition = options => carousel => {
-  Object.assign(carousel, {
+const finiteTransition = (options = defaultOptions) => carousel => {
+  Object.assign(carousel, options, {
     goTo: goTo(carousel.goTo, carousel),
-    transitionOptions: Object.assign({}, defaultOptions, options),
   });
 };
 

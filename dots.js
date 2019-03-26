@@ -1,11 +1,20 @@
 const dots = () => carousel => {
-  let dotsList = createDotsList(carousel);
+  let dotsList = document.createElement('ul');
   const goTo = carousel.goTo;
+  const buildCarousel = carousel.build;
   const destroyCarousel = carousel.destroy;
+
+  dotsList.classList.add('carousel-dots');
   Object.assign(carousel, {
-    goTo: (...args) => {
+    goTo: index => {
       setActiveDot(carousel);
-      return goTo(...args);
+      return goTo(index);
+    },
+    build() {
+      dotsList.innerHTML = '';
+      dotsList.appendChild(createDots(carousel));
+      setActiveDot(carousel);
+      return buildCarousel();
     },
     destroy() {
       if (dotsList.parentElement) {
@@ -17,18 +26,16 @@ const dots = () => carousel => {
   carousel.api.dots = {
     dotsList,
   };
-  setActiveDot(carousel);
 };
 
 export default dots;
 
-function createDotsList(carousel) {
-  const dotsList = document.createElement('ul');
-  dotsList.classList.add('carousel-dots');
+function createDots(carousel) {
+  const fragment = document.createDocumentFragment();
   for (let i = 0; i < nrOfDots(carousel); i++) {
-    dotsList.appendChild(createDotItem(carousel, i));
+    fragment.appendChild(createDotItem(carousel, i));
   }
-  return dotsList;
+  return fragment;
 }
 
 function createDotItem(carousel, index) {
@@ -37,7 +44,6 @@ function createDotItem(carousel, index) {
   dotItem.addEventListener('click', () =>
     carousel.goTo(index * carousel.slidesToScroll)
   );
-
   return dotItem;
 }
 

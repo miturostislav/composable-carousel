@@ -12,6 +12,8 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
 
   composers.forEach(composer => composer(carousel));
   carousel.build().then(onInit || noop);
+  carousel.goTo(carousel.activeSlideIndex);
+
   api = {
     goToNext() {
       return carousel.goToNext();
@@ -33,7 +35,6 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
         Object.keys(api).forEach(key => {
           delete api[key];
         });
-        api = null;
       });
     },
     ...carousel.api,

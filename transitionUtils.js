@@ -1,6 +1,8 @@
 export function setCarouselTransition(carousel) {
-  const { ms, easing } = carousel.transitionOptions;
-  carousel.frame.style.setProperty('transition', `transform ${ms}ms ${easing}`);
+  carousel.frame.style.setProperty(
+    'transition',
+    `transform ${carousel.transitionTime}ms ${carousel.transitionEasing}`
+  );
 }
 
 export function removeCarouselTransition(carousel) {
@@ -8,6 +10,6 @@ export function removeCarouselTransition(carousel) {
 }
 
 export const defaultOptions = {
-  ms: 200,
-  easing: 'ease-out',
+  transitionTime: 200,
+  transitionEasing: 'ease-out',
 };

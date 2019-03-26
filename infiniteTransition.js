@@ -4,7 +4,7 @@ import {
   defaultOptions,
 } from './transitionUtils';
 
-const goTo = (parentGoTo, carousel) => {
+const goTo = carousel => {
   let isAnimating = false;
   return (index, { toRight, toLeft } = {}) =>
     new Promise(resolve => {
@@ -31,13 +31,14 @@ const goTo = (parentGoTo, carousel) => {
                 onTransitionEnd
               );
               removeCarouselTransition(carousel);
-              parentGoTo(index);
+              carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
+              carousel.activeSlideIndex = index;
               isAnimating = false;
               resolve();
             }
           );
         } else {
-          parentGoTo(index);
+          carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
           resolve();
         }
       }
@@ -49,15 +50,40 @@ const goToNext = carousel => () =>
 const goToPrev = carousel => () =>
   carousel.goTo(carousel.prevIndexToScroll(), { toLeft: true });
 
-const infiniteTransition = options => carousel => {
-  Object.assign(carousel, {
-    goTo: goTo(carousel.goTo, carousel),
+const infiniteTransition = (options = defaultOptions) => carousel => {
+  const buildCarousel = carousel.build;
+
+  Object.assign(carousel, options, {
+    goTo: goTo(carousel),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
     nrOfClonesPerSide: () =>
-      Math.ceil(carousel.visibleSlides + carousel.slidesToScroll - 1),
-    transitionOptions: Object.assign({}, defaultOptions, options),
+      carousel.areEnoughSlides()
+        ? Math.ceil(carousel.visibleSlides + carousel.slidesToScroll - 1)
+        : 0,
+    nrOfSlideElements: () =>
+      carousel.areEnoughSlides()
+        ? carousel.nrOfSlides + carousel.nrOfClonesPerSide() * 2
+        : carousel.nrOfSlides,
+    build() {
+      const buildPromise = buildCarousel();
+      cloneSlides(carousel);
+      return buildPromise;
+    },
   });
 };
 
 export default infiniteTransition;
+
+function cloneSlides(carousel) {
+  for (let i = 0; i < carousel.nrOfClonesPerSide(); i++) {
+    const indexToClone =
+      i - carousel.nrOfSlides < 0 ? i : i - carousel.nrOfSlides;
+    const slideToPrepend = carousel.slides[
+      carousel.nrOfSlides - 1 - indexToClone
+    ].cloneNode(true);
+    const slideToAppend = carousel.slides[indexToClone].cloneNode(true);
+    carousel.frame.insertBefore(slideToPrepend, carousel.frame.children[0]);
+    carousel.frame.appendChild(slideToAppend);
+  }
+}
