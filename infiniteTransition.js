@@ -4,10 +4,10 @@ const goTo = carousel => {
   const transitionToSlide = createSlideTransition(carousel);
   return (index, { toRight, toLeft } = {}) => {
     if (index !== carousel.activeSlideIndex) {
-      carousel.activeSlideIndex = index;
       return transitionToSlide(
         getSlideIndexToTransit(carousel, index, { toRight, toLeft })
       ).then(() => {
+        carousel.activeSlideIndex = index;
         carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
       });
     } else {
