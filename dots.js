@@ -7,7 +7,9 @@ const dots = () => carousel => {
   dotsList.classList.add('carousel-dots');
   Object.assign(carousel, {
     goTo: index => {
-      return goTo(index).then(() => setActiveDot(carousel));
+      const goToPromise = goTo(index);
+      setActiveDot(carousel);
+      return goToPromise;
     },
     build() {
       dotsList.innerHTML = '';
