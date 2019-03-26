@@ -30,6 +30,7 @@ const responsive = (responsiveOptions, { onResize } = {}) => carousel => {
     if (currentBreakpoint !== getCurrentBreakpoint(responsiveOptions)) {
       currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
       carousel.build().then(onResize || noop);
+      carousel.goTo(carousel.activeSlideIndex);
     }
   }
 };

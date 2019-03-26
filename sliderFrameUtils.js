@@ -24,7 +24,7 @@ export function createFrame(carousel) {
   carousel.selector.appendChild(newFrame);
   carousel.frame = newFrame;
   insertSlidesIntoFrame(carousel);
-  return isFrameReady();
+  return isPaintReady();
 }
 
 export function destroyFrame(carousel) {
@@ -32,7 +32,7 @@ export function destroyFrame(carousel) {
   carousel.selector.style.removeProperty('overflow');
   carousel.selector.removeChild(carousel.frame);
   carousel.frame = null;
-  return isFrameReady();
+  return isPaintReady();
 }
 
 export function insertSlidesIntoFrame(carousel) {
@@ -74,7 +74,7 @@ export const goToNext = carousel => () =>
 export const goToPrev = carousel => () =>
   carousel.goTo(carousel.prevIndexToScroll());
 
-export const isFrameReady = () => {
+export const isPaintReady = () => {
   return new Promise(resolve => {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {

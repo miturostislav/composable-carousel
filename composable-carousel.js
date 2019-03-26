@@ -5,7 +5,6 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
     selector,
     slides: Array.from(selector.children),
     nrOfSlides: selector.children.length,
-    onInit,
     api: {},
   };
   let api;
