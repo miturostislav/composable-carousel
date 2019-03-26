@@ -1,48 +1,20 @@
-import {
-  setCarouselTransition,
-  removeCarouselTransition,
-  defaultOptions,
-} from './transitionUtils';
+import { createSlideTransition, defaultOptions } from './utils/transitionUtils';
 
 const goTo = carousel => {
-  let isAnimating = false;
-  return (index, { toRight, toLeft } = {}) =>
-    new Promise(resolve => {
-      if (carousel.areEnoughSlides() && !isAnimating) {
-        const nrOfClonesPerSide = carousel.nrOfClonesPerSide();
-        let slideIndexToTransit;
-        if (toRight && index < carousel.activeSlideIndex) {
-          slideIndexToTransit = nrOfClonesPerSide + carousel.nrOfSlides + index;
-        } else if (toLeft && index > carousel.activeSlideIndex) {
-          slideIndexToTransit =
-            nrOfClonesPerSide - (carousel.nrOfSlides - index);
-        } else {
-          slideIndexToTransit = index + nrOfClonesPerSide;
-        }
-        if (index !== carousel.activeSlideIndex) {
-          isAnimating = true;
-          setCarouselTransition(carousel);
-          carousel.translateToSlide(slideIndexToTransit);
-          carousel.frame.addEventListener(
-            'transitionend',
-            function onTransitionEnd() {
-              carousel.frame.removeEventListener(
-                'transitionend',
-                onTransitionEnd
-              );
-              removeCarouselTransition(carousel);
-              carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
-              carousel.activeSlideIndex = index;
-              isAnimating = false;
-              resolve();
-            }
-          );
-        } else {
-          carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
-          resolve();
-        }
-      }
-    });
+  const transitionToSlide = createSlideTransition(carousel);
+  return (index, { toRight, toLeft } = {}) => {
+    if (index !== carousel.activeSlideIndex) {
+      carousel.activeSlideIndex = index;
+      return transitionToSlide(
+        getSlideIndexToTransit(carousel, index, { toRight, toLeft })
+      ).then(() => {
+        carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
+      });
+    } else {
+      carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
+      return Promise.resolve();
+    }
+  };
 };
 
 const goToNext = carousel => () =>
@@ -86,4 +58,18 @@ function cloneSlides(carousel) {
     carousel.frame.insertBefore(slideToPrepend, carousel.frame.children[0]);
     carousel.frame.appendChild(slideToAppend);
   }
+}
+
+function getSlideIndexToTransit(carousel, index, { toRight, toLeft }) {
+  let slideIndexToTransit;
+  if (toRight && index < carousel.activeSlideIndex) {
+    slideIndexToTransit =
+      carousel.nrOfClonesPerSide() + carousel.nrOfSlides + index;
+  } else if (toLeft && index > carousel.activeSlideIndex) {
+    slideIndexToTransit =
+      carousel.nrOfClonesPerSide() - (carousel.nrOfSlides - index);
+  } else {
+    slideIndexToTransit = index + carousel.nrOfClonesPerSide();
+  }
+  return slideIndexToTransit;
 }

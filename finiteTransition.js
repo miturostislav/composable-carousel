@@ -1,41 +1,20 @@
-import {
-  setCarouselTransition,
-  removeCarouselTransition,
-  defaultOptions,
-} from './transitionUtils';
+import { createSlideTransition, defaultOptions } from './utils/transitionUtils';
 
-const goTo = (parentGoTo, carousel) => {
-  let isAnimating = false;
-  return index =>
-    new Promise(resolve => {
-      if (carousel.areEnoughSlides() && !isAnimating) {
-        if (index !== carousel.activeSlideIndex) {
-          isAnimating = true;
-          setCarouselTransition(carousel);
-          parentGoTo(index);
-          carousel.frame.addEventListener(
-            'transitionend',
-            function onTransitionEnd() {
-              carousel.frame.removeEventListener(
-                'transitionend',
-                onTransitionEnd
-              );
-              removeCarouselTransition(carousel);
-              isAnimating = false;
-              resolve();
-            }
-          );
-        } else {
-          parentGoTo(index);
-          resolve();
-        }
-      }
-    });
+const goTo = carousel => {
+  const transitionToSlide = createSlideTransition(carousel);
+  return index => {
+    if (index !== carousel.activeSlideIndex) {
+      carousel.activeSlideIndex = index;
+      return transitionToSlide(index);
+    } else {
+      return Promise.resolve();
+    }
+  };
 };
 
 const finiteTransition = (options = defaultOptions) => carousel => {
   Object.assign(carousel, options, {
-    goTo: goTo(carousel.goTo, carousel),
+    goTo: goTo(carousel),
   });
 };
 

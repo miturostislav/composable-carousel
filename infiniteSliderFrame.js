@@ -1,4 +1,4 @@
-import { createSliderFrame } from './sliderFrameUtils';
+import { createSliderFrame } from './utils/sliderFrameUtils';
 
 const infiniteSliderFrame = options => carousel => {
   createSliderFrame(

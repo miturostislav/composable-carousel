@@ -1,4 +1,4 @@
-import { noop } from './utils';
+import { noop } from './utils/utils';
 
 const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
   let carousel = {

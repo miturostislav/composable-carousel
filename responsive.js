@@ -1,5 +1,5 @@
-import { getCurrentBreakpoint } from './responsiveUtils';
-import { noop } from './utils';
+import { getCurrentBreakpoint } from './utils/responsiveUtils';
+import { noop } from './utils/utils';
 
 const responsive = (responsiveOptions, { onResize } = {}) => carousel => {
   let currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
