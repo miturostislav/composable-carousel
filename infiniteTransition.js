@@ -22,10 +22,11 @@ const goToNext = carousel => () =>
 const goToPrev = carousel => () =>
   carousel.goTo(carousel.prevIndexToScroll(), { toLeft: true });
 
-const infiniteTransition = (options = defaultOptions) => carousel => {
+const infiniteTransition = options => carousel => {
+  const finalOptions = Object.assign({}, defaultOptions, options);
   const buildCarousel = carousel.build;
 
-  Object.assign(carousel, options, {
+  Object.assign(carousel, finalOptions, {
     goTo: goTo(carousel),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),

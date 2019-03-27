@@ -8,41 +8,30 @@ import infiniteSliderFrame from './infiniteSliderFrame';
 import infiniteTransition from './infiniteTransition';
 import responsive from './responsive';
 
-export default function createCarousel({
-  selector,
-  onInit,
-  options = {
-    infinite: false,
-    isAutoSlide: false,
-    dots: false,
-    isDraggable: false,
-    responsiveOptions: [
-      {
-        breakpoint: Infinity,
-      },
-    ],
-  },
-}) {
-  const sliderFrameOptions = {
-    visibleSlides: options.visibleSlides,
-    slidesToScroll: options.slidesToScroll,
-    activeSlideIndex: options.activeSlideIndex,
-  };
-  const transitionOptions = {
-    transitionTime: options.transitionTime,
-    transitionEasing: options.transitionEasing,
-  };
+const defaultOptions = {
+  infinite: false,
+  isAutoSlide: false,
+  dots: false,
+  isDraggable: false,
+  responsiveOptions: [
+    {
+      breakpoint: Infinity,
+    },
+  ],
+};
 
+export default function createCarousel({ selector, onInit, options }) {
+  const finalOptions = Object.assign({}, defaultOptions, options);
   return composeCarousel(selector, { onInit: onInit })(
-    options.infinite
-      ? infiniteSliderFrame(sliderFrameOptions)
-      : finiteSliderFrame(sliderFrameOptions),
-    options.infinite
-      ? infiniteTransition(transitionOptions)
-      : finiteTransition(transitionOptions),
-    dots({ dots: options.dots }),
-    draggable({ isDraggable: options.isDraggable }),
-    autoSlide({ isAutoSlide: options.isAutoSlide }),
-    responsive(options.responsiveOptions)
+    finalOptions.infinite
+      ? infiniteSliderFrame(finalOptions)
+      : finiteSliderFrame(finalOptions),
+    finalOptions.infinite
+      ? infiniteTransition(finalOptions)
+      : finiteTransition(finalOptions),
+    dots(finalOptions),
+    draggable({ isDraggable: finalOptions.isDraggable }),
+    autoSlide({ isAutoSlide: finalOptions.isAutoSlide }),
+    responsive(finalOptions.responsiveOptions)
   );
 }

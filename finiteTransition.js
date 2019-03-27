@@ -12,8 +12,9 @@ const goTo = carousel => {
   };
 };
 
-const finiteTransition = (options = defaultOptions) => carousel => {
-  Object.assign(carousel, options, {
+const finiteTransition = options => carousel => {
+  const finalOptions = Object.assign({}, defaultOptions, options);
+  Object.assign(carousel, finalOptions, {
     goTo: goTo(carousel),
   });
 };
