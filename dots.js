@@ -6,11 +6,7 @@ const dots = ({ dots: useDots = true } = {}) => carousel => {
 
   dotsList.classList.add('carousel-dots');
   Object.assign(carousel, {
-    goTo: index => {
-      const goToPromise = goTo(index);
-      setActiveDot(carousel);
-      return goToPromise;
-    },
+    goTo: (...args) => goTo(...args).then(() => setActiveDot(carousel)),
     build() {
       if (useDots) {
         dotsList.innerHTML = '';
