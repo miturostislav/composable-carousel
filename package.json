@@ -10,7 +10,7 @@
   },
   "author": "Mitu Rostislav",
   "license": "MIT",
-  "main": "composable-carousel.js",
+  "main": "createCarousel.js",
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.12.1",

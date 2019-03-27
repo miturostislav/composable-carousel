@@ -1,4 +1,4 @@
-const draggable = (isDraggable = true) => carousel => {
+const draggable = ({ isDraggable = true } = {}) => carousel => {
   function onStartDragging(onStartEvent) {
     const initialTranslateValue = getTranslateValue(carousel);
     let draggedValue = 0;

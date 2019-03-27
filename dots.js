@@ -1,4 +1,4 @@
-const dots = () => carousel => {
+const dots = ({ dots: useDots = true } = {}) => carousel => {
   let dotsList = document.createElement('ul');
   const goTo = carousel.goTo;
   const buildCarousel = carousel.build;
@@ -12,9 +12,13 @@ const dots = () => carousel => {
       return goToPromise;
     },
     build() {
-      dotsList.innerHTML = '';
-      dotsList.appendChild(createDots(carousel));
-      setActiveDot(carousel);
+      if (useDots) {
+        dotsList.innerHTML = '';
+        dotsList.appendChild(createDots(carousel));
+        setActiveDot(carousel);
+      } else if (dotsList.parentElement) {
+        dotsList.parentElement.removeChild(dotsList);
+      }
       return buildCarousel();
     },
     destroy() {

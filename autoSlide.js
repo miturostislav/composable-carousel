@@ -1,6 +1,6 @@
 const autoSlide = ({
   autoSlideTime = 2000,
-  isAutoSlideActive = true,
+  isAutoSlide = true,
 } = {}) => carousel => {
   let intervalID;
   const buildCarousel = carousel.build;
@@ -8,11 +8,11 @@ const autoSlide = ({
 
   Object.assign(carousel, {
     autoSlideTime,
-    isAutoSlideActive,
+    isAutoSlide,
     build: () =>
       buildCarousel().then(() => {
         clearInterval(intervalID);
-        if (isAutoSlideActive) {
+        if (isAutoSlide) {
           startAutoSlide();
         }
       }),
