@@ -11,13 +11,8 @@ import responsive from './responsive';
 const defaultOptions = {
   infinite: false,
   isAutoSlide: false,
-  dots: false,
+  hasDots: false,
   isDraggable: false,
-  responsiveOptions: [
-    {
-      breakpoint: Infinity,
-    },
-  ],
 };
 
 export default function createCarousel({ selector, onInit, options }) {
@@ -29,9 +24,9 @@ export default function createCarousel({ selector, onInit, options }) {
     finalOptions.infinite
       ? infiniteTransition(finalOptions)
       : finiteTransition(finalOptions),
-    dots(finalOptions),
+    dots({ hasDots: finalOptions.isDraggable }),
     draggable({ isDraggable: finalOptions.isDraggable }),
     autoSlide({ isAutoSlide: finalOptions.isAutoSlide }),
-    responsive(finalOptions.responsiveOptions)
+    finalOptions.responsiveOptions && responsive(finalOptions.responsiveOptions)
   );
 }

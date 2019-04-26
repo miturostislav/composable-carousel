@@ -1,4 +1,4 @@
-const dots = ({ dots: useDots = true } = {}) => carousel => {
+const dots = ({ hasDots = true } = {}) => carousel => {
   let dotsList = document.createElement('ul');
   const goTo = carousel.goTo;
   const buildCarousel = carousel.build;
@@ -8,7 +8,7 @@ const dots = ({ dots: useDots = true } = {}) => carousel => {
   Object.assign(carousel, {
     goTo: (...args) => goTo(...args).then(() => setActiveDot(carousel)),
     build() {
-      if (useDots) {
+      if (hasDots) {
         dotsList.innerHTML = '';
         dotsList.appendChild(createDots(carousel));
         setActiveDot(carousel);
