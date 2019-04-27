@@ -4,8 +4,9 @@ const goTo = carousel => {
   const transitionToSlide = createSlideTransition(carousel);
   return index => {
     if (index !== carousel.activeSlideIndex) {
-      carousel.activeSlideIndex = index;
-      return transitionToSlide(index);
+      return transitionToSlide(index).then(() => {
+        carousel.activeSlideIndex = index;
+      });
     } else {
       return Promise.resolve();
     }

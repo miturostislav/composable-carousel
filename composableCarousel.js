@@ -16,13 +16,7 @@ const composeCarousel = (selector, { onInit, onChange } = {}) => (
   goTo = carousel.goTo;
   carousel.build().then(onInit || noop);
   carousel.goTo(carousel.activeSlideIndex);
-  carousel.goTo = (...args) => {
-    const goToPromise = goTo(...args);
-    if (onChange) {
-      onChange();
-    }
-    return goToPromise;
-  };
+  carousel.goTo = (...args) => goTo(...args).then(onChange || noop);
 
   api = {
     goToNext() {
