@@ -7,15 +7,20 @@ import finiteTransition from './finiteTransition';
 import infiniteSliderFrame from './infiniteSliderFrame';
 import infiniteTransition from './infiniteTransition';
 import responsive from './responsive';
+import { noop } from './utils/utils';
 
 const defaultOptions = {
   infinite: false,
   isAutoSlide: false,
-  hasDots: false,
   isDraggable: false,
 };
 
-export default function createCarousel({ selector, onInit, options }) {
+export default function createCarousel({
+  selector,
+  onInit,
+  onResize,
+  options,
+}) {
   const finalOptions = Object.assign({}, defaultOptions, options);
   return composeCarousel(selector, { onInit: onInit })(
     finalOptions.infinite
@@ -24,9 +29,11 @@ export default function createCarousel({ selector, onInit, options }) {
     finalOptions.infinite
       ? infiniteTransition(finalOptions)
       : finiteTransition(finalOptions),
-    dots({ hasDots: finalOptions.isDraggable }),
+    dots(),
     draggable({ isDraggable: finalOptions.isDraggable }),
     autoSlide({ isAutoSlide: finalOptions.isAutoSlide }),
-    finalOptions.responsiveOptions && responsive(finalOptions.responsiveOptions)
+    finalOptions.responsiveOptions
+      ? responsive(finalOptions.responsiveOptions, { onResize })
+      : noop
   );
 }
