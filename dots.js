@@ -20,6 +20,15 @@ const dots = () => carousel => {
     },
   });
   carousel.api.dots = {
+    getNrOfDots() {
+      return nrOfDots(carousel);
+    },
+    nrOfActiveDot() {
+      return nrOfActiveDot(carousel);
+    },
+    goToDot(index) {
+      carousel.goTo(index * carousel.slidesToScroll);
+    },
     dotsList,
   };
 };

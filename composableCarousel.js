@@ -1,6 +1,8 @@
 import { noop } from './utils/utils';
 
-const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
+const composeCarousel = (selector, { onInit, onChange } = {}) => (
+  ...composers
+) => {
   let carousel = {
     selector,
     slides: Array.from(selector.children),
@@ -8,10 +10,19 @@ const composeCarousel = (selector, { onInit } = {}) => (...composers) => {
     api: {},
   };
   let api;
+  let goTo;
 
   composers.forEach(composer => composer(carousel));
+  goTo = carousel.goTo;
   carousel.build().then(onInit || noop);
   carousel.goTo(carousel.activeSlideIndex);
+  carousel.goTo = (...args) => {
+    const goToPromise = goTo(...args);
+    if (onChange) {
+      onChange();
+    }
+    return goToPromise;
+  };
 
   api = {
     goToNext() {

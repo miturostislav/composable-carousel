@@ -19,10 +19,11 @@ export default function createCarousel({
   selector,
   onInit,
   onResize,
+  onChange,
   options,
 }) {
   const finalOptions = Object.assign({}, defaultOptions, options);
-  return composeCarousel(selector, { onInit: onInit })(
+  return composeCarousel(selector, { onInit, onChange })(
     finalOptions.infinite
       ? infiniteSliderFrame(finalOptions)
       : finiteSliderFrame(finalOptions),
