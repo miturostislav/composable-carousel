@@ -1,38 +1,47 @@
-import { getCurrentBreakpoint } from './utils/responsiveUtils';
-import { noop } from './utils/utils';
+"use strict";
 
-const responsive = (responsiveOptions, { onResize } = {}) => carousel => {
-  let currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
-  const buildCarousel = carousel.build;
-  const destroyCarousel = carousel.destroy;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
-  carousel.build = () => {
-    Object.assign(
-      carousel,
-      responsiveOptions.find(
-        responsiveOption =>
-          responsiveOption.breakpoint ===
-          getCurrentBreakpoint(responsiveOptions)
-      ).options
-    );
-    return buildCarousel().then(() => {
+var _responsiveUtils = require("./utils/responsiveUtils");
+
+var _utils = require("./utils/utils");
+
+var responsive = function responsive(responsiveOptions) {
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      onResize = _ref.onResize;
+
+  return function (carousel) {
+    var currentBreakpoint = (0, _responsiveUtils.getCurrentBreakpoint)(responsiveOptions);
+    var buildCarousel = carousel.build;
+    var destroyCarousel = carousel.destroy;
+
+    carousel.build = function () {
+      Object.assign(carousel, responsiveOptions.find(function (responsiveOption) {
+        return responsiveOption.breakpoint === (0, _responsiveUtils.getCurrentBreakpoint)(responsiveOptions);
+      }).options);
+      return buildCarousel().then(function () {
+        window.removeEventListener('resize', rebuildOnResize);
+        window.addEventListener('resize', rebuildOnResize);
+      });
+    };
+
+    carousel.destroy = function () {
       window.removeEventListener('resize', rebuildOnResize);
-      window.addEventListener('resize', rebuildOnResize);
-    });
-  };
+      return destroyCarousel();
+    };
 
-  carousel.destroy = () => {
-    window.removeEventListener('resize', rebuildOnResize);
-    return destroyCarousel();
-  };
-
-  function rebuildOnResize() {
-    if (currentBreakpoint !== getCurrentBreakpoint(responsiveOptions)) {
-      currentBreakpoint = getCurrentBreakpoint(responsiveOptions);
-      carousel.build().then(onResize || noop);
-      carousel.goTo(carousel.activeSlideIndex);
+    function rebuildOnResize() {
+      if (currentBreakpoint !== (0, _responsiveUtils.getCurrentBreakpoint)(responsiveOptions)) {
+        currentBreakpoint = (0, _responsiveUtils.getCurrentBreakpoint)(responsiveOptions);
+        carousel.build().then(onResize || _utils.noop);
+        carousel.goTo(carousel.activeSlideIndex);
+      }
     }
-  }
+  };
 };
 
-export default responsive;
+var _default = responsive;
+exports["default"] = _default;

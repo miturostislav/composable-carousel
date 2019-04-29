@@ -1,38 +1,56 @@
-const autoSlide = ({
-  autoSlideTime = 2000,
-  isAutoSlide = true,
-} = {}) => carousel => {
-  let intervalID;
-  const buildCarousel = carousel.build;
-  const destroyCarousel = carousel.destroy;
+"use strict";
 
-  Object.assign(carousel, {
-    autoSlideTime,
-    isAutoSlide,
-    build: () =>
-      buildCarousel().then(() => {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var autoSlide = function autoSlide() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$autoSlideTime = _ref.autoSlideTime,
+      autoSlideTime = _ref$autoSlideTime === void 0 ? 2000 : _ref$autoSlideTime,
+      _ref$isAutoSlide = _ref.isAutoSlide,
+      isAutoSlide = _ref$isAutoSlide === void 0 ? true : _ref$isAutoSlide;
+
+  return function (carousel) {
+    var intervalID;
+    var buildCarousel = carousel.build;
+    var destroyCarousel = carousel.destroy;
+    Object.assign(carousel, {
+      autoSlideTime: autoSlideTime,
+      isAutoSlide: isAutoSlide,
+      build: function build() {
+        return buildCarousel().then(function () {
+          clearInterval(intervalID);
+
+          if (isAutoSlide) {
+            startAutoSlide();
+          }
+        });
+      },
+      destroy: function destroy() {
+        return destroyCarousel().then(function () {
+          return clearInterval(intervalID);
+        });
+      }
+    });
+    carousel.api.autoSlide = {
+      start: function start() {
+        startAutoSlide();
+      },
+      stop: function stop() {
         clearInterval(intervalID);
-        if (isAutoSlide) {
-          startAutoSlide();
-        }
-      }),
-    destroy: () => destroyCarousel().then(() => clearInterval(intervalID)),
-  });
-  carousel.api.autoSlide = {
-    start() {
-      startAutoSlide();
-    },
-    stop() {
-      clearInterval(intervalID);
-    },
-  };
+      }
+    };
 
-  function startAutoSlide() {
-    clearInterval(intervalID);
-    intervalID = setInterval(() => {
-      carousel.goToNext();
-    }, carousel.autoSlideTime);
-  }
+    function startAutoSlide() {
+      clearInterval(intervalID);
+      intervalID = setInterval(function () {
+        carousel.goToNext();
+      }, carousel.autoSlideTime);
+    }
+  };
 };
 
-export default autoSlide;
+var _default = autoSlide;
+exports["default"] = _default;

@@ -1,70 +1,90 @@
-const dots = () => carousel => {
-  let dotsList = document.createElement('ul');
-  const goTo = carousel.goTo;
-  const buildCarousel = carousel.build;
-  const destroyCarousel = carousel.destroy;
+"use strict";
 
-  dotsList.classList.add('carousel-dots');
-  Object.assign(carousel, {
-    goTo: (...args) => goTo(...args).then(() => setActiveDot(carousel)),
-    build() {
-      dotsList.innerHTML = '';
-      dotsList.appendChild(createDots(carousel));
-      return buildCarousel();
-    },
-    destroy() {
-      if (dotsList.parentElement) {
-        dotsList.parentElement.removeChild(dotsList);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var dots = function dots() {
+  return function (carousel) {
+    var dotsList = document.createElement('ul');
+    var _goTo = carousel.goTo;
+    var buildCarousel = carousel.build;
+    var destroyCarousel = carousel.destroy;
+    dotsList.classList.add('carousel-dots');
+    Object.assign(carousel, {
+      goTo: function goTo() {
+        return _goTo.apply(void 0, arguments).then(function () {
+          return setActiveDot(carousel);
+        });
+      },
+      build: function build() {
+        dotsList.innerHTML = '';
+        dotsList.appendChild(createDots(carousel));
+        return buildCarousel();
+      },
+      destroy: function destroy() {
+        if (dotsList.parentElement) {
+          dotsList.parentElement.removeChild(dotsList);
+        }
+
+        return destroyCarousel();
       }
-      return destroyCarousel();
-    },
-  });
-  carousel.api.dots = {
-    getNrOfDots() {
-      return nrOfDots(carousel);
-    },
-    nrOfActiveDot() {
-      return nrOfActiveDot(carousel);
-    },
-    goToDot(index) {
-      carousel.goTo(index * carousel.slidesToScroll);
-    },
-    dotsList,
+    });
+    carousel.api.dots = {
+      getNrOfDots: function getNrOfDots() {
+        return nrOfDots(carousel);
+      },
+      nrOfActiveDot: function nrOfActiveDot() {
+        return _nrOfActiveDot(carousel);
+      },
+      goToDot: function goToDot(index) {
+        carousel.goTo(index * carousel.slidesToScroll);
+      },
+      dotsList: dotsList
+    };
   };
 };
 
-export default dots;
+var _default = dots;
+exports["default"] = _default;
 
 function createDots(carousel) {
-  const fragment = document.createDocumentFragment();
-  for (let i = 0; i < nrOfDots(carousel); i++) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < nrOfDots(carousel); i++) {
     fragment.appendChild(createDotItem(carousel, i));
   }
+
   return fragment;
 }
 
 function createDotItem(carousel, index) {
-  const dotItem = document.createElement('li');
+  var dotItem = document.createElement('li');
   dotItem.classList.add('dot');
-  dotItem.addEventListener('click', () =>
-    carousel.goTo(index * carousel.slidesToScroll)
-  );
+  dotItem.addEventListener('click', function () {
+    return carousel.goTo(index * carousel.slidesToScroll);
+  });
   return dotItem;
 }
 
 function setActiveDot(carousel) {
-  const dots = carousel.api.dots.dotsList.children;
-  const activeDotIndex = nrOfActiveDot(carousel);
-  [].forEach.call(dots, dot => {
+  var dots = carousel.api.dots.dotsList.children;
+
+  var activeDotIndex = _nrOfActiveDot(carousel);
+
+  [].forEach.call(dots, function (dot) {
     dot.classList.remove('active');
   });
   dots[activeDotIndex].classList.add('active');
 }
 
-function nrOfDots({ nrOfSlides, slidesToScroll }) {
+function nrOfDots(_ref) {
+  var nrOfSlides = _ref.nrOfSlides,
+      slidesToScroll = _ref.slidesToScroll;
   return Math.ceil(nrOfSlides / slidesToScroll);
 }
 
-function nrOfActiveDot(carousel) {
+function _nrOfActiveDot(carousel) {
   return parseInt(carousel.activeSlideIndex / carousel.slidesToScroll);
 }

@@ -1,39 +1,42 @@
-export function createSlideTransition(carousel) {
-  let isAnimating = false;
-  return (slideIndexToTransit) =>
-    new Promise(resolve => {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createSlideTransition = createSlideTransition;
+exports.setCarouselTransition = setCarouselTransition;
+exports.removeCarouselTransition = removeCarouselTransition;
+exports.defaultOptions = void 0;
+
+function createSlideTransition(carousel) {
+  var isAnimating = false;
+  return function (slideIndexToTransit) {
+    return new Promise(function (resolve) {
       if (carousel.areEnoughSlides() && !isAnimating) {
         isAnimating = true;
         setCarouselTransition(carousel);
         carousel.translateToSlide(slideIndexToTransit);
-        carousel.frame.addEventListener(
-          'transitionend',
-          function onTransitionEnd() {
-            carousel.frame.removeEventListener(
-              'transitionend',
-              onTransitionEnd
-            );
-            removeCarouselTransition(carousel);
-            isAnimating = false;
-            resolve();
-          }
-        );
+        carousel.frame.addEventListener('transitionend', function onTransitionEnd() {
+          carousel.frame.removeEventListener('transitionend', onTransitionEnd);
+          removeCarouselTransition(carousel);
+          isAnimating = false;
+          resolve();
+        });
       }
     });
+  };
 }
 
-export function setCarouselTransition(carousel) {
-  carousel.frame.style.setProperty(
-    'transition',
-    `transform ${carousel.transitionTime}ms ${carousel.transitionEasing}`
-  );
+function setCarouselTransition(carousel) {
+  carousel.frame.style.setProperty('transition', "transform ".concat(carousel.transitionTime, "ms ").concat(carousel.transitionEasing));
 }
 
-export function removeCarouselTransition(carousel) {
-  carousel.frame.style.setProperty('transition', `transform 0ms`);
+function removeCarouselTransition(carousel) {
+  carousel.frame.style.setProperty('transition', "transform 0ms");
 }
 
-export const defaultOptions = {
+var defaultOptions = {
   transitionTime: 200,
-  transitionEasing: 'ease-out',
+  transitionEasing: 'ease-out'
 };
+exports.defaultOptions = defaultOptions;

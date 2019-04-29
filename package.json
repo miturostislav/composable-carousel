@@ -3,15 +3,19 @@
   "version": "1.0.5",
   "description": "lightweight composable carousel",
   "scripts": {
-    "eslint": "eslint --fix *.js",
-    "prettier": "prettier --write *.js",
-    "pretty-quick": "pretty-quick --staged --pattern '*.*js'",
+    "build": "babel src -d .",
+    "eslint": "eslint --fix src/*.js",
+    "prettier": "prettier --write src/*.js",
+    "pretty-quick": "pretty-quick --staged --pattern 'src/*.js'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mitu Rostislav",
   "license": "MIT",
-  "main": "createCarousel.js",
+  "main": "src/createCarousel.js",
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.12.1",
     "eslint-config-prettier": "^4.0.0",

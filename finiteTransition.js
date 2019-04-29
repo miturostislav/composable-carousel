@@ -1,10 +1,17 @@
-import { createSlideTransition, defaultOptions } from './utils/transitionUtils';
+"use strict";
 
-const goTo = carousel => {
-  const transitionToSlide = createSlideTransition(carousel);
-  return index => {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _transitionUtils = require("./utils/transitionUtils");
+
+var goTo = function goTo(carousel) {
+  var transitionToSlide = (0, _transitionUtils.createSlideTransition)(carousel);
+  return function (index) {
     if (index !== carousel.activeSlideIndex) {
-      return transitionToSlide(index).then(() => {
+      return transitionToSlide(index).then(function () {
         carousel.activeSlideIndex = index;
       });
     } else {
@@ -13,11 +20,14 @@ const goTo = carousel => {
   };
 };
 
-const finiteTransition = options => carousel => {
-  const finalOptions = Object.assign({}, defaultOptions, options);
-  Object.assign(carousel, finalOptions, {
-    goTo: goTo(carousel),
-  });
+var finiteTransition = function finiteTransition(options) {
+  return function (carousel) {
+    var finalOptions = Object.assign({}, _transitionUtils.defaultOptions, options);
+    Object.assign(carousel, finalOptions, {
+      goTo: goTo(carousel)
+    });
+  };
 };
 
-export default finiteTransition;
+var _default = finiteTransition;
+exports["default"] = _default;

@@ -1,7 +1,7 @@
 import composeCarousel from '../composable-carousel';
-import infiniteSliderFrame from '../infiniteSliderFrame';
-import responsive from '../responsive';
-import draggable from '../draggable';
+import infiniteSliderFrame from '../src/infiniteSliderFrame';
+import responsive from '../src/responsive';
+import draggable from '../src/draggable';
 import responsiveDraggable from '../responsiveDraggable';
 
 const carousel = composeCarousel(document.querySelector('#selector'))(

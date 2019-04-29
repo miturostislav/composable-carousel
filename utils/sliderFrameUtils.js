@@ -1,24 +1,42 @@
-export function createSliderFrame(options, carousel) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createSliderFrame = createSliderFrame;
+exports.createFrame = createFrame;
+exports.destroyFrame = destroyFrame;
+exports.insertSlidesIntoFrame = insertSlidesIntoFrame;
+exports.removeSlidesFromFrame = removeSlidesFromFrame;
+exports.areEnoughSlides = _areEnoughSlides;
+exports.defaultOptions = exports.isPaintReady = exports.goToPrev = exports.goToNext = exports.goTo = exports.translateToSlide = void 0;
+
+function createSliderFrame(options, carousel) {
   Object.assign(carousel, defaultOptions, options, {
     goTo: goTo(carousel),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
     translateToSlide: translateToSlide(carousel),
-    nrOfSlideElements: () => carousel.nrOfSlides,
-    areEnoughSlides: () => areEnoughSlides(carousel),
-    build: () => createFrame(carousel),
-    destroy: () => destroyFrame(carousel),
+    nrOfSlideElements: function nrOfSlideElements() {
+      return carousel.nrOfSlides;
+    },
+    areEnoughSlides: function areEnoughSlides() {
+      return _areEnoughSlides(carousel);
+    },
+    build: function build() {
+      return createFrame(carousel);
+    },
+    destroy: function destroy() {
+      return destroyFrame(carousel);
+    }
   });
 }
 
-export function createFrame(carousel) {
-  const newFrame = carousel.frame || document.createElement('div');
+function createFrame(carousel) {
+  var newFrame = carousel.frame || document.createElement('div');
   newFrame.innerHTML = '';
   newFrame.classList.add('frame');
-  newFrame.style.setProperty(
-    'width',
-    `${(100 * carousel.nrOfSlideElements()) / carousel.visibleSlides}%`
-  );
+  newFrame.style.setProperty('width', "".concat(100 * carousel.nrOfSlideElements() / carousel.visibleSlides, "%"));
   newFrame.style.setProperty('display', 'flex');
   carousel.selector.style.setProperty('overflow', 'hidden');
   carousel.selector.appendChild(newFrame);
@@ -27,7 +45,7 @@ export function createFrame(carousel) {
   return isPaintReady();
 }
 
-export function destroyFrame(carousel) {
+function destroyFrame(carousel) {
   removeSlidesFromFrame(carousel);
   carousel.selector.style.removeProperty('overflow');
   carousel.selector.removeChild(carousel.frame);
@@ -35,57 +53,77 @@ export function destroyFrame(carousel) {
   return isPaintReady();
 }
 
-export function insertSlidesIntoFrame(carousel) {
-  carousel.slides.forEach(slide => {
-    slide.style.setProperty('width', `${100 / carousel.nrOfSlideElements()}%`);
+function insertSlidesIntoFrame(carousel) {
+  carousel.slides.forEach(function (slide) {
+    slide.style.setProperty('width', "".concat(100 / carousel.nrOfSlideElements(), "%"));
     carousel.frame.appendChild(slide);
   });
 }
 
-export function removeSlidesFromFrame({ slides, selector }) {
-  slides.forEach(slide => {
+function removeSlidesFromFrame(_ref) {
+  var slides = _ref.slides,
+      selector = _ref.selector;
+  slides.forEach(function (slide) {
     slide.style.removeProperty('width');
     selector.appendChild(slide);
   });
 }
 
-export function areEnoughSlides(carousel) {
+function _areEnoughSlides(carousel) {
   return carousel.nrOfSlides > carousel.visibleSlides;
 }
 
-export const translateToSlide = carousel => index => {
-  carousel.frame.style.setProperty(
-    'transform',
-    `translateX(-${(100 / carousel.nrOfSlideElements()) * index}%)`
-  );
+var translateToSlide = function translateToSlide(carousel) {
+  return function (index) {
+    carousel.frame.style.setProperty('transform', "translateX(-".concat(100 / carousel.nrOfSlideElements() * index, "%)"));
+  };
 };
 
-export const goTo = carousel => index => {
-  if (carousel.areEnoughSlides()) {
-    carousel.translateToSlide(index);
-    carousel.activeSlideIndex = index;
-  }
-  return Promise.resolve();
+exports.translateToSlide = translateToSlide;
+
+var goTo = function goTo(carousel) {
+  return function (index) {
+    if (carousel.areEnoughSlides()) {
+      carousel.translateToSlide(index);
+      carousel.activeSlideIndex = index;
+    }
+
+    return Promise.resolve();
+  };
 };
 
-export const goToNext = carousel => () =>
-  carousel.goTo(carousel.nextIndexToScroll());
+exports.goTo = goTo;
 
-export const goToPrev = carousel => () =>
-  carousel.goTo(carousel.prevIndexToScroll());
+var goToNext = function goToNext(carousel) {
+  return function () {
+    return carousel.goTo(carousel.nextIndexToScroll());
+  };
+};
 
-export const isPaintReady = () => {
-  return new Promise(resolve => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
+exports.goToNext = goToNext;
+
+var goToPrev = function goToPrev(carousel) {
+  return function () {
+    return carousel.goTo(carousel.prevIndexToScroll());
+  };
+};
+
+exports.goToPrev = goToPrev;
+
+var isPaintReady = function isPaintReady() {
+  return new Promise(function (resolve) {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
         resolve();
       });
     });
   });
 };
 
-export const defaultOptions = {
+exports.isPaintReady = isPaintReady;
+var defaultOptions = {
   visibleSlides: 1,
   slidesToScroll: 1,
-  activeSlideIndex: 0,
+  activeSlideIndex: 0
 };
+exports.defaultOptions = defaultOptions;
