@@ -11,7 +11,7 @@
   },
   "author": "Mitu Rostislav",
   "license": "MIT",
-  "main": "src/createCarousel.js",
+  "main": "createCarousel.js",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
