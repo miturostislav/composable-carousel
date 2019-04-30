@@ -1,6 +1,6 @@
 {
   "name": "composable-carousel",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "lightweight composable carousel",
   "scripts": {
     "build": "babel src -d .",
