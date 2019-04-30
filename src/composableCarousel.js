@@ -1,12 +1,12 @@
 import { noop } from './utils/utils';
 
-const composeCarousel = (selector, { onInit, onChange } = {}) => (
+const composeCarousel = (carouselEl, { onInit, onChange } = {}) => (
   ...composers
 ) => {
   let carousel = {
-    selector,
-    slides: Array.from(selector.children),
-    nrOfSlides: selector.children.length,
+    carouselEl,
+    slides: Array.from(carouselEl.children),
+    nrOfSlides: carouselEl.children.length,
     api: {},
   };
   let api;

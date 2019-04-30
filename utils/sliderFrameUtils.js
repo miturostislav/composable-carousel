@@ -38,8 +38,8 @@ function createFrame(carousel) {
   newFrame.classList.add('frame');
   newFrame.style.setProperty('width', "".concat(100 * carousel.nrOfSlideElements() / carousel.visibleSlides, "%"));
   newFrame.style.setProperty('display', 'flex');
-  carousel.selector.style.setProperty('overflow', 'hidden');
-  carousel.selector.appendChild(newFrame);
+  carousel.carouselEl.style.setProperty('overflow', 'hidden');
+  carousel.carouselEl.appendChild(newFrame);
   carousel.frame = newFrame;
   insertSlidesIntoFrame(carousel);
   return isPaintReady();
@@ -47,8 +47,8 @@ function createFrame(carousel) {
 
 function destroyFrame(carousel) {
   removeSlidesFromFrame(carousel);
-  carousel.selector.style.removeProperty('overflow');
-  carousel.selector.removeChild(carousel.frame);
+  carousel.carouselEl.style.removeProperty('overflow');
+  carousel.carouselEl.removeChild(carousel.frame);
   carousel.frame = null;
   return isPaintReady();
 }
@@ -62,10 +62,10 @@ function insertSlidesIntoFrame(carousel) {
 
 function removeSlidesFromFrame(_ref) {
   var slides = _ref.slides,
-      selector = _ref.selector;
+      carouselEl = _ref.carouselEl;
   slides.forEach(function (slide) {
     slide.style.removeProperty('width');
-    selector.appendChild(slide);
+    carouselEl.appendChild(slide);
   });
 }
 

@@ -20,8 +20,8 @@ export function createFrame(carousel) {
     `${(100 * carousel.nrOfSlideElements()) / carousel.visibleSlides}%`
   );
   newFrame.style.setProperty('display', 'flex');
-  carousel.selector.style.setProperty('overflow', 'hidden');
-  carousel.selector.appendChild(newFrame);
+  carousel.carouselEl.style.setProperty('overflow', 'hidden');
+  carousel.carouselEl.appendChild(newFrame);
   carousel.frame = newFrame;
   insertSlidesIntoFrame(carousel);
   return isPaintReady();
@@ -29,8 +29,8 @@ export function createFrame(carousel) {
 
 export function destroyFrame(carousel) {
   removeSlidesFromFrame(carousel);
-  carousel.selector.style.removeProperty('overflow');
-  carousel.selector.removeChild(carousel.frame);
+  carousel.carouselEl.style.removeProperty('overflow');
+  carousel.carouselEl.removeChild(carousel.frame);
   carousel.frame = null;
   return isPaintReady();
 }
@@ -42,10 +42,10 @@ export function insertSlidesIntoFrame(carousel) {
   });
 }
 
-export function removeSlidesFromFrame({ slides, selector }) {
+export function removeSlidesFromFrame({ slides, carouselEl }) {
   slides.forEach(slide => {
     slide.style.removeProperty('width');
-    selector.appendChild(slide);
+    carouselEl.appendChild(slide);
   });
 }
 

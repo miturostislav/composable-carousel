@@ -45,9 +45,7 @@ var autoSlide = function autoSlide() {
 
     function startAutoSlide() {
       clearInterval(intervalID);
-      intervalID = setInterval(function () {
-        carousel.goToNext();
-      }, carousel.autoSlideTime);
+      intervalID = setInterval(carousel.goToNext, carousel.autoSlideTime);
     }
   };
 };

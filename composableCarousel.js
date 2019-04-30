@@ -11,16 +11,16 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var composeCarousel = function composeCarousel(selector) {
+var composeCarousel = function composeCarousel(carouselEl) {
   var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
       onInit = _ref.onInit,
       onChange = _ref.onChange;
 
   return function () {
     var carousel = {
-      selector: selector,
-      slides: Array.from(selector.children),
-      nrOfSlides: selector.children.length,
+      carouselEl: carouselEl,
+      slides: Array.from(carouselEl.children),
+      nrOfSlides: carouselEl.children.length,
       api: {}
     };
     var api;

@@ -34,20 +34,16 @@ var defaultOptions = {
 };
 
 function createCarousel(_ref) {
-  var selector = _ref.selector,
+  var carouselEl = _ref.carouselEl,
       onInit = _ref.onInit,
       onResize = _ref.onResize,
       onChange = _ref.onChange,
       options = _ref.options;
   var finalOptions = Object.assign({}, defaultOptions, options);
-  return (0, _composableCarousel["default"])(selector, {
+  return (0, _composableCarousel["default"])(carouselEl, {
     onInit: onInit,
     onChange: onChange
-  })(finalOptions.infinite ? (0, _infiniteSliderFrame["default"])(finalOptions) : (0, _finiteSliderFrame["default"])(finalOptions), finalOptions.infinite ? (0, _infiniteTransition["default"])(finalOptions) : (0, _finiteTransition["default"])(finalOptions), (0, _dots["default"])(), (0, _draggable["default"])({
-    isDraggable: finalOptions.isDraggable
-  }), (0, _autoSlide["default"])({
-    isAutoSlide: finalOptions.isAutoSlide
-  }), finalOptions.responsiveOptions ? (0, _responsive["default"])(finalOptions.responsiveOptions, {
+  })(finalOptions.infinite ? (0, _infiniteSliderFrame["default"])(finalOptions) : (0, _finiteSliderFrame["default"])(finalOptions), finalOptions.infinite ? (0, _infiniteTransition["default"])(finalOptions) : (0, _finiteTransition["default"])(finalOptions), (0, _dots["default"])(), (0, _draggable["default"])(finalOptions), (0, _autoSlide["default"])(finalOptions), finalOptions.responsiveOptions ? (0, _responsive["default"])(finalOptions.responsiveOptions, {
     onResize: onResize
   }) : _utils.noop);
 }

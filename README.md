@@ -1,8 +1,9 @@
-**Work in progress**
+# [Composable carousel](https://github.com/miturostislav/composable-carousel) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/miturostislav/composable-carousel/blob/master/LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/miturostislav/composable-carousel)
 
-# Lightweight and composable carousel with no dependencies
+Composable carousel is a javascript library for building your own carousel with no dependencies
 
-composable-carousel is a very lightweight library formed from small composable functions with no dependencies and no styling. Each composable function can be imported independently. You can compose your carousel for your own needs without importing unused code. You are free to reuse some composable functions from this library with the possibility to create your own composable functions and to use them together. Your suggestions and pull requests are welcome.
+* **Composable:**  The library provides a set of composable functions which offer the possibility to create a carousel of your needs without unnecessary dependencies and unused code. 
+* **Customisable:** Create your own composable functions compose them together with the provided composable functions.
 
 ## Quick start
 
@@ -16,7 +17,7 @@ or
 yarn add composable-carousel
 ```
 
-### Usage
+### Example
 
 #### HTML
 
@@ -31,6 +32,52 @@ yarn add composable-carousel
 
 #### Javascript
 
+##### The ```createCarousel``` accepts an option object and compose the carousel for you:
+
+```
+import createCarousel from 'composable-carousel';
+
+const carousel = createCarousel({
+    carouselEl: document.getElementById('selector'),
+    onInit() {},
+    onChange() {},
+    onResize() {},
+    options: {
+        visibleSlides: 1,
+        slidesToScroll: 1,
+        activeSlideIndex: 0,
+        transitionTime: 200,
+        transitionEasing: 'ease-out',
+        isAutoSlide: true,
+        autoSlideTime: 2000,
+        isDraggable: true,
+        responsiveOptions: [{
+            breakpoint: breakpoints.upToMedium,
+            options: {
+                isDraggable: true,
+                visibleSlides: 1.5,
+            },
+        },
+        {
+            breakpoint: breakpoints.upToLarge,
+            options: {
+                isDraggable: true,
+                visibleSlides: 2.5,
+            },
+        },
+        {
+            breakpoint: Infinity,
+            options: {
+                isDraggable: false,
+                visibleSlides: 3,
+            }
+        }],
+    },
+})
+```
+
+##### The following example imports the composable functions that are needed and compose the carousel using these functions:
+
 ```
 import composeCarousel from 'composable-carousel';
 import finiteSliderFrame form 'composable-carousel/finiteSliderFrame';
@@ -40,55 +87,84 @@ import draggable form 'composable-carousel/draggable';
 import dots form 'composable-carousel/dots';
 
 const selector = document.querySelector('#selector');
-const carousel = composeCarousel(selector, {
+const carousel = composeCarousel(carouselEl, {
     onInit() {...}
 })(
     finiteSliderFrame({visibleSlides: 1, slidesToScroll: 1 }),
-    finiteTransition(),
-    autoSlide(3000),
+    finiteTransition({ transitionTime: 200 }),
+    autoSlide({ autoSlideTime: 2000 }),
     draggable(),
-    ...
+    dots(),
+    responsive([{
+        breakpoint: breakpoints.Infinity,
+        options: {
+            isDraggable: false,
+        }
+    },
+    {
+        breakpoint: breakpoints.upToMedium,
+        options: {
+            isDraggable: true,
+        }
+    }])
 );
-const dotsListEl = carousel.compose(dots);
-
-selector.appendChild(dotsListEl);
 ```
 
 ### Composable functions
 
-**`finiteSliderFrame`** <br />
-This function creates the frame element. It implements the interface of the carousel such as: goToNext(), goToPrev, etc.
+* **`finiteSliderFrame`** **`infiniteSliderFrame`** <br />
+*options: { visibleSlides: number, slidesToScroll: number }*
 
-**`infiniteSliderFrame`** <br />
-This function is the same as the function described above but it is used for infinite carousels. It creates the clone slides and manage the infinite logic.
+* **`finiteTransition`** **`infiniteTransition`** <br />
+*options: { transitionTime: number, transitionEasing: string }*
 
-**`finiteTransition`** <br />
-This function is used to animate slide transitions for finite carousel.
+* **`draggable`** <br />
+*options: {}*
 
-**`infiniteTransition`** <br />
-This function is used to animate slide transitions for infinite carousel.
+* **`dots`** <br />
+*options: {}*
 
-**`draggable`** <br />
-This function implements the drag and drop functionality.
-
-**`dots`** <br />
-This function creates a list of dots elements and also implements all the logic related to active dot and dots clicks.
-
-**`...`** <br />
+* **`responsive`** <br />
+*Options: [{ breakpoint: number, options: {\*/Override any options from above/*} }]*
 
 ### API
 
-**`goToNext()`** <br />
-Go to next slide.
+#### Each composer function exposes an API:
 
-**`goToPrev()`** <br />
-Go to previous slide.
+##### Main API:
 
-**`goTo(slideIndex)`** <br />
-Go to a particular (slideIndex) slide.
+**`goToNext()`** *Go to next slide* <br />
 
-**`getActiveSlideIndex()`** <br />
-Returns the current slide index.
+**`goToPrev()`** *Go to previous slide* <br />
 
-**`compose(fn)`** <br />
-Compose the carousel with an additional composable function.
+**`goTo(slideIndex)`** *Go to a particular (slideIndex) slide* <br />
+
+**`getActiveSlideIndex()`** *Returns the current slide index.* <br />
+
+**`destroy()`** *Destroys the carousel* <br />
+
+##### Dots API:
+
+**`getNrOfDots()`** *Returns the nr of total dots* <br />
+
+**`nrOfActiveDot()`** *Returns the index of active dot* <br />
+
+**`goToDot(dotIndex)`** *Go to a particular (dotIndex) dot* <br />
+
+**`dotsList()`** *Returns an element that is a list of dots* <br />
+
+##### AutoSlide API:
+
+**`stop()`** *Stops the auto slide interval* <br />
+
+**`start()`** *Starts the auto slide interval* <br />
+
+##### AutoSlide API:
+
+**`stop()`** *Stops the draggable functionality* <br />
+
+**`start()`** *Starts the draggable functionality* <br />
+
+## LICENSE
+
+MIT

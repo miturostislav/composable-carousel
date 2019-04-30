@@ -16,14 +16,14 @@ const defaultOptions = {
 };
 
 export default function createCarousel({
-  selector,
+  carouselEl,
   onInit,
   onResize,
   onChange,
   options,
 }) {
   const finalOptions = Object.assign({}, defaultOptions, options);
-  return composeCarousel(selector, { onInit, onChange })(
+  return composeCarousel(carouselEl, { onInit, onChange })(
     finalOptions.infinite
       ? infiniteSliderFrame(finalOptions)
       : finiteSliderFrame(finalOptions),
