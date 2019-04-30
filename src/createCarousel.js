@@ -31,8 +31,8 @@ export default function createCarousel({
       ? infiniteTransition(finalOptions)
       : finiteTransition(finalOptions),
     dots(),
-    draggable({ isDraggable: finalOptions.isDraggable }),
-    autoSlide({ isAutoSlide: finalOptions.isAutoSlide }),
+    draggable(finalOptions),
+    autoSlide(finalOptions),
     finalOptions.responsiveOptions
       ? responsive(finalOptions.responsiveOptions, { onResize })
       : noop
