@@ -1,9 +1,9 @@
 # [Composable carousel](https://github.com/miturostislav/composable-carousel) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/miturostislav/composable-carousel/blob/master/LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/miturostislav/composable-carousel)
 
-Composable carousel is a javascript library for building your own carousel with no dependencies
+Composable carousel is a javascript library for building your own carousel with no dependencies.
 
 * **Composable:**  The library provides a set of composable functions which offer the possibility to create a carousel of your needs without unnecessary dependencies and unused code. 
-* **Customisable:** Create your own composable functions compose them together with the provided composable functions.
+* **Customisable:** Create your own composable functions and compose them together with the provided composable functions.
 
 ## Quick start
 
@@ -86,9 +86,10 @@ import autoSlide form 'composable-carousel/autoSlide';
 import draggable form 'composable-carousel/draggable';
 import dots form 'composable-carousel/dots';
 
-const selector = document.querySelector('#selector');
-const carousel = composeCarousel(carouselEl, {
-    onInit() {...}
+const selector = document.getElementById('#selector');
+const carousel = composeCarousel(document.getElementById('#selector'), {
+    onInit() {},
+    onChange() {},
 })(
     finiteSliderFrame({visibleSlides: 1, slidesToScroll: 1 }),
     finiteTransition({ transitionTime: 200 }),
@@ -110,10 +111,10 @@ const carousel = composeCarousel(carouselEl, {
 );
 ```
 
-### Composable functions
+### Composable functions:
 
 * **`finiteSliderFrame`** **`infiniteSliderFrame`** <br />
-*options: { visibleSlides: number, slidesToScroll: number }*
+*options: { visibleSlides: number, slidesToScroll: number, activeSlideIndex: number }*
 
 * **`finiteTransition`** **`infiniteTransition`** <br />
 *options: { transitionTime: number, transitionEasing: string }*
@@ -159,7 +160,7 @@ const carousel = composeCarousel(carouselEl, {
 
 **`start()`** *Starts the auto slide interval* <br />
 
-##### AutoSlide API:
+##### Draggable API:
 
 **`stop()`** *Stops the draggable functionality* <br />
 
