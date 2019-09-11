@@ -1,22 +1,21 @@
 import { createSlideTransition, defaultOptions } from './utils/transitionUtils';
 
-const goTo = carousel => {
+const transitionTo = (carousel, goTo) => {
   const transitionToSlide = createSlideTransition(carousel);
   return index => {
     if (index !== carousel.activeSlideIndex) {
-      return transitionToSlide(index).then(() => {
-        carousel.activeSlideIndex = index;
-      });
+      return transitionToSlide(index).then(() => goTo(index));
     } else {
-      return Promise.resolve();
+      return goTo(index);
     }
   };
 };
 
 const finiteTransition = options => carousel => {
+  const goTo = carousel.goTo;
   const finalOptions = Object.assign({}, defaultOptions, options);
   Object.assign(carousel, finalOptions, {
-    goTo: goTo(carousel),
+    goTo: transitionTo(carousel, goTo),
   });
 };
 

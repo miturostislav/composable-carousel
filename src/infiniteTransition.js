@@ -1,16 +1,17 @@
 import { createSlideTransition, defaultOptions } from './utils/transitionUtils';
 
-const goTo = carousel => {
+const transitionTo = (carousel, goTo) => {
   const transitionToSlide = createSlideTransition(carousel);
   return (index, { toRight, toLeft } = {}) => {
     if (index !== carousel.activeSlideIndex) {
       return transitionToSlide(
         getSlideIndexToTransit(carousel, index, { toRight, toLeft })
       ).then(() => {
-        carousel.activeSlideIndex = index;
+        goTo(index);
         carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
       });
     } else {
+      goTo(index);
       carousel.translateToSlide(index + carousel.nrOfClonesPerSide());
       return Promise.resolve();
     }
@@ -25,9 +26,10 @@ const goToPrev = carousel => () =>
 const infiniteTransition = options => carousel => {
   const finalOptions = Object.assign({}, defaultOptions, options);
   const buildCarousel = carousel.build;
+  const goTo = carousel.goTo;
 
   Object.assign(carousel, finalOptions, {
-    goTo: goTo(carousel),
+    goTo: transitionTo(carousel, goTo),
     goToNext: goToNext(carousel),
     goToPrev: goToPrev(carousel),
     nrOfClonesPerSide: () =>
